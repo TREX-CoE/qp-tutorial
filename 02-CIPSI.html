@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-03-21 Tue 17:43 -->
+<!-- 2023-03-21 Tue 17:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -270,27 +270,28 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="org-div-home-and-up">
- <a accesskey="h" href="01-Intro.html"> UP </a>
+ <a accesskey="h" href="01-Intro.html"> PREV </a>
  |
- <a accesskey="H" href="03-.html"> HOME </a>
+ <a accesskey="H" href="03-.html"> NEXT </a>
 </div><div id="content">
 <h1 class="title">Frozen-Core FCI Calculations using CIPSI</h1>
 <div id="table-of-contents">
+<a href="index.html"><h2>HOME</h2></a>
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3a97581">1. Running FCI calculations</a>
+<li><a href="#org566db08">1. Running FCI calculations</a>
 <ul>
-<li><a href="#orgdb457f5">1.1. Preparing the EZFIO</a></li>
-<li><a href="#orga40752a">1.2. Running a first frozen-Core CIPSI Calculation</a></li>
-<li><a href="#org83ed350">1.3. Using Natural Orbitals</a></li>
-<li><a href="#org31885a1">1.4. Running a second frozen-Core CIPSI Calculation</a></li>
+<li><a href="#org17a9492">1.1. Preparing the EZFIO</a></li>
+<li><a href="#org36bc7df">1.2. Running a first frozen-Core CIPSI Calculation</a></li>
+<li><a href="#org109b350">1.3. Using Natural Orbitals</a></li>
+<li><a href="#orgffb841b">1.4. Running a second frozen-Core CIPSI Calculation</a></li>
 </ul>
 </li>
-<li><a href="#orgf3edc1c">2. Key points from the output files</a>
+<li><a href="#org13b8432">2. Key points from the output files</a>
 <ul>
-<li><a href="#orgcc570aa">2.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org87a3c6f">2.2. Extrapolated energies</a></li>
+<li><a href="#org31f277b">2.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#orgb790e6e">2.2. Extrapolated energies</a></li>
 </ul>
 </li>
 </ul>
@@ -307,17 +308,17 @@ the 6-31g* basis set.
 
 
 <div class="figure">
-<p><object type="image/svg+xml" data="./images/formaldehyde.svg" class="org-svg">
+<p><object type="image/svg+xml" data="./images/formaldehyde.svg" class="org-svg" width="100px">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 
-<div id="outline-container-org3a97581" class="outline-2">
-<h2 id="org3a97581"><span class="section-number-2">1</span> Running FCI calculations</h2>
+<div id="outline-container-org566db08" class="outline-2">
+<h2 id="org566db08"><span class="section-number-2">1</span> Running FCI calculations</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgdb457f5" class="outline-3">
-<h3 id="orgdb457f5"><span class="section-number-3">1.1</span> Preparing the EZFIO</h3>
+<div id="outline-container-org17a9492" class="outline-3">
+<h3 id="org17a9492"><span class="section-number-3">1.1</span> Preparing the EZFIO</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 First, let's create an <code>xyz</code> file for Formaldehyde:
@@ -370,8 +371,8 @@ and to freeze the core orbitals:
 </div>
 </div>
 
-<div id="outline-container-orga40752a" class="outline-3">
-<h3 id="orga40752a"><span class="section-number-3">1.2</span> Running a first frozen-Core CIPSI Calculation</h3>
+<div id="outline-container-org36bc7df" class="outline-3">
+<h3 id="org36bc7df"><span class="section-number-3">1.2</span> Running a first frozen-Core CIPSI Calculation</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Now, let's run a frozen-core CIPSI calculation using the <code>qp run fci</code>
@@ -403,8 +404,8 @@ to the file <code>formaldehyde.fci1.out</code>.
 </div>
 </div>
 
-<div id="outline-container-org83ed350" class="outline-3">
-<h3 id="org83ed350"><span class="section-number-3">1.3</span> Using Natural Orbitals</h3>
+<div id="outline-container-org109b350" class="outline-3">
+<h3 id="org109b350"><span class="section-number-3">1.3</span> Using Natural Orbitals</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 We can improve the convergence of CIPSI by using natural orbitals. To
@@ -423,8 +424,8 @@ This will save the natural orbitals to the EZFIO database.
 </div>
 </div>
 
-<div id="outline-container-org31885a1" class="outline-3">
-<h3 id="org31885a1"><span class="section-number-3">1.4</span> Running a second frozen-Core CIPSI Calculation</h3>
+<div id="outline-container-orgffb841b" class="outline-3">
+<h3 id="orgffb841b"><span class="section-number-3">1.4</span> Running a second frozen-Core CIPSI Calculation</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Next, we can run the frozen-core CIPSI calculation again, but this time using the natural orbitals:
@@ -450,8 +451,8 @@ calculations using Quantum Package.
 </div>
 </div>
 
-<div id="outline-container-orgf3edc1c" class="outline-2">
-<h2 id="orgf3edc1c"><span class="section-number-2">2</span> Key points from the output files</h2>
+<div id="outline-container-org13b8432" class="outline-2">
+<h2 id="org13b8432"><span class="section-number-2">2</span> Key points from the output files</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The output gives information about the convergence of the
@@ -459,8 +460,8 @@ wavefunction, the energy, and the correlation energy of the system.
 </p>
 </div>
 
-<div id="outline-container-orgcc570aa" class="outline-3">
-<h3 id="orgcc570aa"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
+<div id="outline-container-org31f277b" class="outline-3">
+<h3 id="org31f277b"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The output shows results at different numbers of determinants
@@ -539,8 +540,8 @@ of E+PT2 is more stable, as seen from the flatter curve.
 
 
 
-<div id="outline-container-org87a3c6f" class="outline-3">
-<h3 id="org87a3c6f"><span class="section-number-3">2.2</span> Extrapolated energies</h3>
+<div id="outline-container-orgb790e6e" class="outline-3">
+<h3 id="orgb790e6e"><span class="section-number-3">2.2</span> Extrapolated energies</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 This section of the output shows the minimum PT2 extrapolated
@@ -600,7 +601,7 @@ that the extrapolated FCI value is close to -114.1875.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-03-21 Tue 17:43</p>
+<p class="date">Created: 2023-03-21 Tue 17:47</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
