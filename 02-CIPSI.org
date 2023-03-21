@@ -5,8 +5,6 @@
 #+HTML_LINK_HOME: 03-.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 
-#+ATTR_HTML: :width 100px
-#+ATTR_LATEX: :width 100px
 
 In this part of the tutorial, you will learn how to perform
 frozen-core Full Configuration Interaction (FCI) calculations using
@@ -15,6 +13,8 @@ Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
 ground state of molecules. We will use Formaldehyde as an example in
 the 6-31g* basis set.
 
+#+ATTR_HTML: :width 100px
+#+ATTR_LATEX: :width 100px
    [[./images/formaldehyde.svg]]
 
 * Running FCI calculations
