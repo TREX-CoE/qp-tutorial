@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-03-21 Tue 17:27 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Frozen-Core FCI Calculations using CIPSI</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Anthony Scemama" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script type="text/javascript" src="org-html-themes/src/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="01-JobScripts.html"> UP </a>
+ |
+ <a accesskey="H" href="03-Champ.html"> HOME </a>
+</div><div id="content">
+<h1 class="title">Frozen-Core FCI Calculations using CIPSI</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6c4931c">1. Running FCI calculations</a>
+<ul>
+<li><a href="#orgeb46380">1.1. Preparing the EZFIO</a></li>
+<li><a href="#org841c74f">1.2. Running a first frozen-Core CIPSI Calculation</a></li>
+<li><a href="#org7df6587">1.3. Using Natural Orbitals</a></li>
+<li><a href="#org0ecf4ff">1.4. Running a second frozen-Core CIPSI Calculation</a></li>
+</ul>
+</li>
+<li><a href="#org2a7d032">2. Key points from the output files</a>
+<ul>
+<li><a href="#org315be8c">2.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#orgfb12b96">2.2. Extrapolated energies</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+In this part of the tutorial, you will learn how to perform
+frozen-core Full Configuration Interaction (FCI) calculations using
+the Configuration Interaction by Perturbation of the
+Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
+ground state of molecules. We will use Formaldehyde as an example in
+the 6-31g* basis set.
+</p>
+
+<div id="outline-container-org6c4931c" class="outline-2">
+<h2 id="org6c4931c"><span class="section-number-2">1</span> Running FCI calculations</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgeb46380" class="outline-3">
+<h3 id="orgeb46380"><span class="section-number-3">1.1</span> Preparing the EZFIO</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="https://en.wikipedia.org/wiki/Formaldehyde#/media/File:Structural_formula_of_formaldehyde.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<p>
+First, let's create an <code>xyz</code> file for Formaldehyde:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-text">4
+Formaldehyde
+        4
+Formaldehyde
+C       0.00000000       0.00000000      -0.60298508
+O       0.00000000       0.00000000       0.60539399
+H       0.00000000       0.93467313      -1.18217476
+H       0.00000000      -0.93467313      -1.18217476
+</pre>
+</div>
+
+<p>
+Next, create an EZFIO database containing the geometry and the basis
+set parameters for the 6-31g* basis set:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp create_ezfio -b 6-31g_star formaldehyde.xyz
+</pre>
+</div>
+
+<p>
+This will create a directory named <code>formaldehyde.ezfio</code> in the current
+working directory, and it will be selected as the currently used EZFIO
+directory in the current shell.
+</p>
+
+<p>
+To perform a frozen-core FCI calculation using CIPSI, we first need to
+run a Hartree-Fock calculation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run scf | tee formaldehyde.scf.out
+</pre>
+</div>
+
+<p>
+and to freeze the core orbitals:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set_frozen_core
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org841c74f" class="outline-3">
+<h3 id="org841c74f"><span class="section-number-3">1.2</span> Running a first frozen-Core CIPSI Calculation</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Now, let's run a frozen-core CIPSI calculation using the <code>qp run fci</code>
+command. The <code>fci</code> program is used to perform CIPSI calculations in
+the full configuration interaction (FCI) space.
+We will set the maximum number of determinants to 50 000 using the <code>qp set determinants</code> command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set determinants n_det_max 50000
+</pre>
+</div>
+
+<p>
+Next, we can run the frozen-core CIPSI calculation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run fci | tee formaldehyde.fci1.out
+</pre>
+</div>
+
+<p>
+This command will perform a CIPSI calculation in the full FCI space
+with Hartree-Fock orbitals and will stop when the number of
+determinants is larger than 50 000. The standard output will be saved
+to the file <code>formaldehyde.fci1.out</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7df6587" class="outline-3">
+<h3 id="org7df6587"><span class="section-number-3">1.3</span> Using Natural Orbitals</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+We can improve the convergence of CIPSI by using natural orbitals. To
+do this, we first need to save the natural orbitals using the qp run
+save<sub>natorb</sub> command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run save_natorb
+</pre>
+</div>
+
+<p>
+This will save the natural orbitals to the EZFIO database.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0ecf4ff" class="outline-3">
+<h3 id="org0ecf4ff"><span class="section-number-3">1.4</span> Running a second frozen-Core CIPSI Calculation</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Next, we can run the frozen-core CIPSI calculation again, but this time using the natural orbitals:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set determinants n_det_max 1e6
+qp run fci | tee formaldehyde.fci2.out
+</pre>
+</div>
+
+<p>
+This command will perform a CIPSI calculation in the full FCI space
+using up to 1 million determinants and the natural orbitals. The
+standard output will be saved to the file formaldehyde.fci2.out.
+</p>
+
+<p>
+Congratulations! You have learned how to perform frozen-core CIPSI
+calculations using Quantum Package.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2a7d032" class="outline-2">
+<h2 id="org2a7d032"><span class="section-number-2">2</span> Key points from the output files</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The output gives information about the convergence of the
+wavefunction, the energy, and the correlation energy of the system.
+</p>
+</div>
+
+<div id="outline-container-org315be8c" class="outline-3">
+<h3 id="org315be8c"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The output shows results at different numbers of determinants
+(<code>N_det</code>) in the wavefunction (1, 9, 21, 46, &#x2026;). For each
+<code>N_det</code>, you can see the energy (E), the PT2 and rPT2
+corrections, and the total energy with these corrections (E+PT2 and
+E+rPT2). The PT2 and rPT2 corrections represent the second-order
+perturbation theory corrections and renormalized PT2 corrections,
+respectively.
+</p>
+
+<pre class="example">
+Summary at N_det =        31824
+-----------------------------------
+ 
+# ============ =============================
+                     State      1
+# ============ =============================
+# E            -114.16730139
+# PT2            -0.01938121     0.00003730
+# rPT2           -0.01931613     0.00003717
+#
+# E+PT2        -114.18668259     0.00003730
+# E+rPT2       -114.18661752     0.00003717
+# ============ =============================
+</pre>
+
+<p>
+A statistical error bar is provided as the PT2 contribution is
+computed using a stochastic algorithm.
+</p>
+
+
+<p>
+You can create the plots showing the convergence of the energy as a
+function of the size of the wave function. First extract the useful
+data from the output file,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp_extract_cipsi_data.py formaldehyde.fci1.out &gt; data
+qp_extract_cipsi_data.py formaldehyde.fci2.out &gt; data2
+</pre>
+</div>
+
+<p>
+and then give the following commands to gnuplot
+</p>
+
+<div class="org-src-container">
+<pre class="src src-gnuplot">set xlabel "N_{det}" 
+set ylabel "Energy" 
+set log x 
+plot "data"  using 1:2 with linespoints title "E(HF)", \
+     "data2" using 1:2 with linespoints title "E(Nat)", \
+     "data"  using 1:($2+$5) with linespoints title "E(HF)+PT2", \ 
+     "data2" using 1:($2+$5) with linespoints title "E(Nat)+PT2"
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./images/cipsi_econv.png" alt="cipsi_econv.png" />
+</p>
+</div>
+
+<p>
+The plot indicates that the variational energy converges more
+quickly with natural orbitals compared to Hartree-Fock
+orbitals. Moreover, for large numbers of determinants, the value
+of E+PT2 is more stable, as seen from the flatter curve.
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgfb12b96" class="outline-3">
+<h3 id="orgfb12b96"><span class="section-number-3">2.2</span> Extrapolated energies</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+This section of the output shows the minimum PT2 extrapolated
+energy for the state, with energies provided for various rPT2
+values. These values provide an estimation of the energy closer to
+the FCI limit.
+</p>
+
+<pre class="example">
+Extrapolated energies
+------------------------
+
+
+ State            1
+
+ =========== ===================
+ minimum PT2 Extrapolated energy
+ =========== ===================
+    -0.0193       -114.18753808
+    -0.0223       -114.18741448
+    -0.0269       -114.18715515
+    -0.0403       -114.18755571
+    -0.0674       -114.18791213
+    -0.1032       -114.18795665
+    -0.1433       -114.18786737
+ =========== ===================
+</pre>
+
+<p>
+The FCI energy is estimated by making a linear fit using all the
+calculations with different N<sub>det</sub>:
+</p>
+
+<p>
+\[
+E_{\text{CIPSI}} (rPT2) = E + \alpha rPT2
+\]
+</p>
+
+
+<div class="figure">
+<p><img src="./images/fit_e_pt2.png" alt="fit_e_pt2.png" />
+</p>
+</div>
+
+<p>
+The extrapolated energies in the table are obtained using different
+numbers of points in the fit. The first column displays the value of
+the PT2 of the first point used in the extrapolation. By providing
+extrapolated values with multiple points, the user can determine the
+stability of the extrapolation. In this case, we can confidently state
+that the extrapolated FCI value is close to -114.1875.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Anthony Scemama</p>
+<p class="date">Created: 2023-03-21 Tue 17:27</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
