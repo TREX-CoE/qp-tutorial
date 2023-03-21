@@ -1,0 +1,133 @@
+#+TITLE: Getting Started with Quantum Package
+#+AUTHOR: Anthony Scemama
+#+LANGUAGE:  en
+#+HTML_LINK_UP: 01-JobScripts.html
+#+HTML_LINK_HOME: 03-Champ.html
+#+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
+
+#+ATTR_HTML: :width 100px
+#+ATTR_LATEX: :width 100px
+  [[./images/QP.png]]
+
+
+* Introduction
+
+  Welcome to Quantum Package (QP), an open-source environment for developing quantum chemistry programs. QP is designed to be user-friendly and easy to use, while still providing powerful tools for quantum chemistry calculations. In this tutorial, we will guide you through the basics of using QP, including setting up the environment, creating an EZFIO database, and running calculations.
+
+* Environment Setup
+
+  Before using QP, you need to set up the environment. QP requires a few environment variables to be set, so that it can find the necessary libraries and programs. Here's how you can set up the environment:
+
+  #+begin_important
+  1. Clone QP from https://github.com/QuantumPackage/qp2.
+  2. Install the dependencies and configure the compilation by running:
+
+  #+begin_src bash
+  source quantum_package.rc
+  ./configure -i all
+  ./configure -c ./config/gfortran_avx.cfg
+  ninja
+  #+end_src
+
+  Note that $QP_ROOT refers to the =qp2= directory.
+  #+end_important
+
+  Alternatively, you can use the QP shell to interact with QP. Here's
+  how you can start the QP shell:
+
+  #+begin_src bash
+  qpsh
+  #+end_src
+
+  Now you're ready to start using QP!
+
+* Creating an EZFIO Database
+
+  QP stores input and output data in a database, called the /EZFIO directory/.
+  To interact with the database, QP provides multiple shell functions,
+  scripts, and programs. Here's how you can create an EZFIO database:
+
+  1. Create a file with a molecular geometry in either /xyz/ or /z-matrix/ format. For example, let's create a file for the water molecule in /xyz/ format:
+
+  #+begin_src text :tangle h2o.xyz
+  3
+  Water
+  O       0.                     0.   0.
+  H      -0.756950272703377558   0.  -0.585882234512562827
+  H       0.756950272703377558   0.  -0.585882234512562827
+  #+end_src
+
+  2. Create an EZFIO database containing the geometry and the basis set parameters for the cc-pVDZ basis set:
+
+  #+begin_src bash
+  qp create_ezfio --basis=cc-pvdz h2o.xyz
+  #+end_src
+
+  A directory named =h2o.ezfio= has been created, and is selected as the
+  currently used EZFIO directory in the current shell. To switch to
+  another EZFIO database, use
+
+  #+begin_src bash
+  qp set_file other.ezfio
+  #+end_src
+
+  Note that when running interactively with =qpsh=, the current EZFIO
+  database is displayed in the terminal prompt.
+
+* Running Calculations
+
+  Now that you have an EZFIO database, you can use QP to run
+  calculations. Here's how you can run a Hartree-Fock calculation:
+
+  #+begin_src bash
+qp run scf | tee h2o.scf.out
+  #+end_src
+
+  This will run the SCF program of QP and save the standard output to
+  the file =h2o.scf.out=. The Hartree-Fock orbitals are stored inside
+  the EZFIO database, so if you run the SCF code again, it will
+  converge in a single iteration because it takes the MOs stored
+  inside the database as an initial guess.
+
+  To run a singles doubles configuration interaction (CISD)
+  calculation, you can use the following commands:
+
+  #+begin_src bash
+qp set_frozen_core
+qp run cisd | tee h2o.cisd.out
+  #+end_src
+
+  The ~qp set_frozen_core~ command is used to exclude the single- and
+  double-excitations from the core /s/ orbitals. The output of this command
+  shows that orbital ~1~ is labeled as ~Core~ and orbitals 2-24 are
+  labeled as ~Active~.
+
+  You can modify the input parameters of the programs using the
+  interactive command ~qp edit~. This will open a temporary file
+  filled-in with data coming from the EZFIO database. When the file is
+  saved and the editor is exited, the data is saved back into the
+  EZFIO.
+
+  #+begin_note
+  You can change the text editor used by qp edit by setting the
+  ~EDITOR~ environment variable to the desired editor, for example, to
+  use Emacs as the editor, run ~export EDITOR=emacs~ before running the
+  ~qp edit~ command.
+  #+end_note
+
+  Alternatively, all the input parameters can be inspected in the
+  shell using ~qp get~, for example:
+
+  #+begin_src bash
+qp get determinants n_det_max
+  #+end_src
+
+  The parameters can be set in the shell using ~qp set~, for example:
+
+  #+begin_src bash
+qp set determinants n_det_max 2000
+  #+end_src
+
+  You can use Tab-completion with the ~qp~ command, which makes the
+  shell interaction more user-friendly.
+

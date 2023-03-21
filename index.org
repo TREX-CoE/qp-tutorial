@@ -1,28 +1,27 @@
-#+TITLE: QMC Hands-on Summer Workshop
-#+AUTHOR: Claudia Filippi, Anthony Scemama
+#+TITLE: QMC Hands-on Workshop
+#+AUTHOR: Abdallah Ammar, Emmanuel Giner, Pierre-François Loos, Anthony Scemama
 #+LANGUAGE:  en
-#+HTML_LINK_HOME: index.html
+#+HTML_LINK_HOME: 01-Intro.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 
 * Presentations
 
-    - [[./Presentations/lectures_filippi_1.pdf][Basic VMC and DMC]]
-    - [[./Presentations/multidet.pdf][Multi-determinant wave functions]]
+#    - [[./Presentations/lectures_filippi_1.pdf][Basic VMC and DMC]]
+#    - [[./Presentations/multidet.pdf][Multi-determinant wave functions]]
 
 * Hands-on
 
-    1. [[./01-Intro_qp.org][Introduction to Quantum Package]]
-    2. [[./02-Champ.org][Introduction to CHAMP]]
-    3. [[./03-JobScripts.org][Job script examples]]
-    4. [[./04-QP_CHAMP.org][Ground state QMC calculations]]
-    5. [[./05-ExcitedStates.org][Excited state calculations]]
+    1. [[./01-Intro.org][Getting started]]
+    5. [[./02-CIPSI.org][Frozen-Core FCI Calculations using CIPSI]]
 
 #+begin_note
     This web site is available here:
 
-    https://trex-coe.github.io/school-slovakia-2022/
+    https://trex-coe.github.io/qp-tutorial
 
 #+end_note
 
-    To go back to the main page, you ca click on the [[./inder.org][HOME]] button at
+#+begin_important
+    To navigate between the pages, you can you can click on the =PREV|NEXT= buttons at
     the top right of the web pages.
+#+end_important    
