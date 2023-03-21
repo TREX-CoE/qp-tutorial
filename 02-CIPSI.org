@@ -18,14 +18,12 @@ the 6-31g* basis set.
 * Running FCI calculations
 ** Preparing the EZFIO
 
-  [[https://en.wikipedia.org/wiki/Formaldehyde#/media/File:Structural_formula_of_formaldehyde.svg]]
+   [[https://upload.wikimedia.org/wikipedia/commons/0/0c/Structural_formula_of_formaldehyde.svg]]
  
  First, let's create an ~xyz~ file for Formaldehyde:
 
  #+begin_src text :tangle formaldehyde.xyz
 4
-Formaldehyde
-        4
 Formaldehyde
 C       0.00000000       0.00000000      -0.60298508
 O       0.00000000       0.00000000       0.60539399
@@ -163,7 +161,7 @@ plot "data"  using 1:2 with linespoints title "E(HF)", \
      "data2" using 1:($2+$5) with linespoints title "E(Nat)+PT2"
   #+end_src
 
-  [[./images/cipsi_econv.png]]
+  [[./images/cipsi_econv.svg]]
 
   The plot indicates that the variational energy converges more
   quickly with natural orbitals compared to Hartree-Fock

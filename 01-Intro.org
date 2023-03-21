@@ -18,19 +18,19 @@
 
   Before using QP, you need to set up the environment. QP requires a few environment variables to be set, so that it can find the necessary libraries and programs. Here's how you can set up the environment:
 
-  #+begin_important
   1. Clone QP from https://github.com/QuantumPackage/qp2.
   2. Install the dependencies and configure the compilation by running:
 
   #+begin_src bash
-  source quantum_package.rc
-  ./configure -i all
-  ./configure -c ./config/gfortran_avx.cfg
-  ninja
+source quantum_package.rc
+./configure -i all
+./configure -c ./config/gfortran_avx.cfg
+ninja
   #+end_src
 
-  Note that $QP_ROOT refers to the =qp2= directory.
-  #+end_important
+  #+begin_note
+  The QP_ROOT environment variable refers to the path of the =qp2= directory.
+  #+end_note
 
   Alternatively, you can use the QP shell to interact with QP. Here's
   how you can start the QP shell:
@@ -50,11 +50,11 @@
   1. Create a file with a molecular geometry in either /xyz/ or /z-matrix/ format. For example, let's create a file for the water molecule in /xyz/ format:
 
   #+begin_src text :tangle h2o.xyz
-  3
-  Water
-  O       0.                     0.   0.
-  H      -0.756950272703377558   0.  -0.585882234512562827
-  H       0.756950272703377558   0.  -0.585882234512562827
+3
+Water
+O       0.                     0.   0.
+H      -0.756950272703377558   0.  -0.585882234512562827
+H       0.756950272703377558   0.  -0.585882234512562827
   #+end_src
 
   2. Create an EZFIO database containing the geometry and the basis set parameters for the cc-pVDZ basis set:
