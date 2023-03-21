@@ -1,8 +1,8 @@
 #+TITLE: Getting Started with Quantum Package
 #+AUTHOR: Anthony Scemama
 #+LANGUAGE:  en
-#+HTML_LINK_UP: 01-JobScripts.html
-#+HTML_LINK_HOME: 03-Champ.html
+#+HTML_LINK_UP: index.html
+#+HTML_LINK_HOME: 02-CIPSI.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 
 #+ATTR_HTML: :width 100px
@@ -47,7 +47,8 @@ ninja
   To interact with the database, QP provides multiple shell functions,
   scripts, and programs. Here's how you can create an EZFIO database:
 
-  1. Create a file with a molecular geometry in either /xyz/ or /z-matrix/ format. For example, let's create a file for the water molecule in /xyz/ format:
+  Create a file with a molecular geometry in either /xyz/ or /z-matrix/ format.
+  For example, let's create a file for the water molecule in /xyz/ format:
 
   #+begin_src text :tangle h2o.xyz
 3
@@ -57,7 +58,8 @@ H      -0.756950272703377558   0.  -0.585882234512562827
 H       0.756950272703377558   0.  -0.585882234512562827
   #+end_src
 
-  2. Create an EZFIO database containing the geometry and the basis set parameters for the cc-pVDZ basis set:
+  Create an EZFIO database containing the geometry and the basis set parameters
+  for the cc-pVDZ basis set:
 
   #+begin_src bash
   qp create_ezfio --basis=cc-pvdz h2o.xyz

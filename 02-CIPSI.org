@@ -1,8 +1,8 @@
 #+TITLE: Frozen-Core FCI Calculations using CIPSI
 #+AUTHOR: Anthony Scemama
 #+LANGUAGE:  en
-#+HTML_LINK_UP: 01-JobScripts.html
-#+HTML_LINK_HOME: 03-Champ.html
+#+HTML_LINK_UP: 01-Intro.html
+#+HTML_LINK_HOME: 03-.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 
 #+ATTR_HTML: :width 100px
@@ -18,8 +18,8 @@ the 6-31g* basis set.
 * Running FCI calculations
 ** Preparing the EZFIO
 
-   [[https://upload.wikimedia.org/wikipedia/commons/0/0c/Structural_formula_of_formaldehyde.svg]]
- 
+   [[./images/formaldehyde.svg]]
+
  First, let's create an ~xyz~ file for Formaldehyde:
 
  #+begin_src text :tangle formaldehyde.xyz
@@ -111,7 +111,7 @@ qp run fci | tee formaldehyde.fci2.out
   wavefunction, the energy, and the correlation energy of the system.
 
 ** Variational energy and PT2 contribution
-   
+
   The output shows results at different numbers of determinants
   (~N_det~) in the wavefunction (1, 9, 21, 46, ...). For each
   ~N_det~, you can see the energy (E), the PT2 and rPT2
@@ -123,7 +123,7 @@ qp run fci | tee formaldehyde.fci2.out
   #+begin_example
 Summary at N_det =        31824
 -----------------------------------
- 
+
 # ============ =============================
                      State      1
 # ============ =============================
@@ -135,7 +135,7 @@ Summary at N_det =        31824
 # E+rPT2       -114.18661752     0.00003717
 # ============ =============================
   #+end_example
-  
+
   A statistical error bar is provided as the PT2 contribution is
   computed using a stochastic algorithm.
 
@@ -152,12 +152,12 @@ qp_extract_cipsi_data.py formaldehyde.fci2.out > data2
   and then give the following commands to gnuplot
 
   #+begin_src gnuplot
-set xlabel "N_{det}" 
-set ylabel "Energy" 
-set log x 
+set xlabel "N_{det}"
+set ylabel "Energy"
+set log x
 plot "data"  using 1:2 with linespoints title "E(HF)", \
      "data2" using 1:2 with linespoints title "E(Nat)", \
-     "data"  using 1:($2+$5) with linespoints title "E(HF)+PT2", \ 
+     "data"  using 1:($2+$5) with linespoints title "E(HF)+PT2", \
      "data2" using 1:($2+$5) with linespoints title "E(Nat)+PT2"
   #+end_src
 
@@ -168,15 +168,15 @@ plot "data"  using 1:2 with linespoints title "E(HF)", \
   orbitals. Moreover, for large numbers of determinants, the value
   of E+PT2 is more stable, as seen from the flatter curve.
 
-    
-  
+
+
 ** Extrapolated energies
 
    This section of the output shows the minimum PT2 extrapolated
    energy for the state, with energies provided for various rPT2
    values. These values provide an estimation of the energy closer to
    the FCI limit.
-   
+
   #+begin_example
 Extrapolated energies
 ------------------------
@@ -214,4 +214,4 @@ stability of the extrapolation. In this case, we can confidently state
 that the extrapolated FCI value is close to -114.1875.
 
 
-  
+
