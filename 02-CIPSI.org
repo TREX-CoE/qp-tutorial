@@ -163,7 +163,7 @@ plot "data"  using 1:2 with linespoints title "E(HF)", \
      "data2" using 1:($2+$5) with linespoints title "E(Nat)+PT2"
   #+end_src
 
-  [[./cipsi_conv1.png]]
+  [[./images/cipsi_econv.png]]
 
   The plot indicates that the variational energy converges more
   quickly with natural orbitals compared to Hartree-Fock
@@ -206,7 +206,7 @@ calculations with different N_det:
 E_{\text{CIPSI}} (rPT2) = E + \alpha rPT2
 \]
 
-[[./fit_e_pt2.png]]
+[[./images/fit_e_pt2.png]]
 
 The extrapolated energies in the table are obtained using different
 numbers of points in the fit. The first column displays the value of
