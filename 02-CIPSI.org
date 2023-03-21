@@ -13,9 +13,7 @@ Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
 ground state of molecules. We will use Formaldehyde as an example in
 the 6-31g* basis set.
 
-#+ATTR_HTML: :width 100px
-#+ATTR_LATEX: :width 100px
-   [[./images/formaldehyde.svg]]
+   [[./images/formaldehyde.png]]
 
 * Running FCI calculations
 ** Preparing the EZFIO
