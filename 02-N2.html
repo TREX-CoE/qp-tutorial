@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-13 Thu 14:24 -->
+<!-- 2023-04-13 Thu 17:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -280,18 +280,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org546e210">1. Preparing the EZFIO</a></li>
-<li><a href="#org4dd1f95">2. Running a first frozen-Core CIPSI Calculation</a>
+<li><a href="#orga380306">1. Preparing the EZFIO</a></li>
+<li><a href="#org95b3587">2. Running a first frozen-Core CIPSI Calculation</a>
 <ul>
-<li><a href="#orgc3b0c4a">2.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org56b46df">2.2. Extrapolated FCI energy</a></li>
+<li><a href="#orgd0f9bc2">2.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#org4310755">2.2. Extrapolated FCI energy</a></li>
 </ul>
 </li>
-<li><a href="#org331d7a7">3. Saving Natural Orbitals</a></li>
-<li><a href="#org6a3b64b">4. Running a second frozen-Core CIPSI Calculation</a>
+<li><a href="#org5cc61eb">3. Saving Natural Orbitals</a></li>
+<li><a href="#orgbd2784a">4. Running a second frozen-Core CIPSI Calculation</a>
 <ul>
-<li><a href="#org5918673">4.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org4bf4257">4.2. Extrapolated FCI energy</a></li>
+<li><a href="#org34fcb59">4.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#org787a9de">4.2. Extrapolated FCI energy</a></li>
 </ul>
 </li>
 </ul>
@@ -306,8 +306,8 @@ ground state of molecules. We will use the dinitrogen molecule near the
 equilibrium bond length, with the cc-pVDZ basis set.
 </p>
 
-<div id="outline-container-org546e210" class="outline-2">
-<h2 id="org546e210"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div id="outline-container-orga380306" class="outline-2">
+<h2 id="orga380306"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, let's create a z-matrix file <code>n2.zmt</code> for dinitrogen, at a distance
@@ -365,8 +365,8 @@ Then, freeze the core orbitals:
 </div>
 </div>
 
-<div id="outline-container-org4dd1f95" class="outline-2">
-<h2 id="org4dd1f95"><span class="section-number-2">2</span> Running a first frozen-Core CIPSI Calculation</h2>
+<div id="outline-container-org95b3587" class="outline-2">
+<h2 id="org95b3587"><span class="section-number-2">2</span> Running a first frozen-Core CIPSI Calculation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 To perform the frozen-core FCI calculation using the CIPSI algorithm
@@ -404,8 +404,8 @@ file <code>n2.fci1.out</code>.
 </p>
 </div>
 
-<div id="outline-container-orgc3b0c4a" class="outline-3">
-<h3 id="orgc3b0c4a"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
+<div id="outline-container-orgd0f9bc2" class="outline-3">
+<h3 id="orgd0f9bc2"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The output of the CIPSI calculation gives information about the
@@ -424,18 +424,18 @@ respectively.
 </p>
 
 <pre class="example">
-Summary at N_det =        52178
+Summary at N_det =        62591
 -----------------------------------
 
 # ============ =============================
                      State      1
 # ============ =============================
-# E            -109.26874586
-# PT2            -0.00944319     0.00001152
-# rPT2           -0.00942889     0.00001151
+# E            -109.26865151
+# PT2            -0.00956176     0.00001384
+# rPT2           -0.00954717     0.00001382
 #
-# E+PT2        -109.27818905     0.00001152
-# E+rPT2       -109.27817475     0.00001151
+# E+PT2        -109.27821327     0.00001384
+# E+rPT2       -109.27819868     0.00001382
 # ============ =============================
 </pre>
 
@@ -484,8 +484,8 @@ energy, but it may overestimate its value.
 </div>
 </div>
 
-<div id="outline-container-org56b46df" class="outline-3">
-<h3 id="org56b46df"><span class="section-number-3">2.2</span> Extrapolated FCI energy</h3>
+<div id="outline-container-org4310755" class="outline-3">
+<h3 id="org4310755"><span class="section-number-3">2.2</span> Extrapolated FCI energy</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 To plot the variational energy as a function of the renormalized
@@ -516,7 +516,7 @@ calculations with different <code>N_det</code>:
 
 <p>
 Fitting the curve with Gnuplot over the last few points (for \(|\text{rPT2}| \le -0.05\)), 
-one obtains an FCI estimate of -109.278 au.
+one obtains an FCI estimate of -109.2779 au.
 </p>
 
 <div class="org-src-container">
@@ -549,13 +549,13 @@ Extrapolated energies
  =========== ===================
  minimum PT2 Extrapolated energy
  =========== ===================
-    -0.0127       -109.27827877
-    -0.0165       -109.27817215
-    -0.0210       -109.27799357
-    -0.0278       -109.27799584
-    -0.0412       -109.27800053
-    -0.0715       -109.27833983
-    -0.1145       -109.27862457
+    -0.0131       -109.27814635
+    -0.0171       -109.27815768
+    -0.0215       -109.27811640
+    -0.0277       -109.27797856
+    -0.0399       -109.27792963
+    -0.0709       -109.27823032
+    -0.1185       -109.27863003
  =========== ===================
 </pre>
 
@@ -565,14 +565,14 @@ numbers of points in the fit. The first column displays the value of
 the PT2 of the first point used in the extrapolation. By providing
 extrapolated values with multiple points, the user can determine the
 stability of the extrapolation. In this case, we can confidently state
-that the extrapolated FCI value is close to -109.2782(2).
+that the extrapolated FCI value is close to -109.2781(2).
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org331d7a7" class="outline-2">
-<h2 id="org331d7a7"><span class="section-number-2">3</span> Saving Natural Orbitals</h2>
+<div id="outline-container-org5cc61eb" class="outline-2">
+<h2 id="org5cc61eb"><span class="section-number-2">3</span> Saving Natural Orbitals</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 We can improve the convergence of CIPSI by using natural orbitals. To
@@ -586,8 +586,8 @@ do this, we first need to save the natural orbitals into the EZFIO database:
 </div>
 </div>
 
-<div id="outline-container-org6a3b64b" class="outline-2">
-<h2 id="org6a3b64b"><span class="section-number-2">4</span> Running a second frozen-Core CIPSI Calculation</h2>
+<div id="outline-container-orgbd2784a" class="outline-2">
+<h2 id="orgbd2784a"><span class="section-number-2">4</span> Running a second frozen-Core CIPSI Calculation</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 We can run the frozen-core CIPSI calculation again, but this
@@ -600,8 +600,8 @@ time using the natural orbitals:
 </div>
 </div>
 
-<div id="outline-container-org5918673" class="outline-3">
-<h3 id="org5918673"><span class="section-number-3">4.1</span> Variational energy and PT2 contribution</h3>
+<div id="outline-container-org34fcb59" class="outline-3">
+<h3 id="org34fcb59"><span class="section-number-3">4.1</span> Variational energy and PT2 contribution</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 To create the plot showing the convergence of the energy as a
@@ -645,8 +645,8 @@ orbitals.
 </div>
 </div>
 
-<div id="outline-container-org4bf4257" class="outline-3">
-<h3 id="org4bf4257"><span class="section-number-3">4.2</span> Extrapolated FCI energy</h3>
+<div id="outline-container-org787a9de" class="outline-3">
+<h3 id="org787a9de"><span class="section-number-3">4.2</span> Extrapolated FCI energy</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 One can also compare the plots of the variational energy as a
@@ -694,13 +694,13 @@ Extrapolated energies
  =========== ===================
  minimum PT2 Extrapolated energy
  =========== ===================
-    -0.0086       -109.27830341
-    -0.0119       -109.27824508
-    -0.0159       -109.27822218
-    -0.0225       -109.27815093
-    -0.0341       -109.27812724
-    -0.0536       -109.27822292
-    -0.0870       -109.27826046
+    -0.0091       -109.27826959
+    -0.0128       -109.27816856
+    -0.0170       -109.27810039
+    -0.0232       -109.27803095
+    -0.0341       -109.27812522
+    -0.0538       -109.27847647
+    -0.0857       -109.27849504
  =========== ===================
 </pre>
 
@@ -717,7 +717,7 @@ energy as -109.2782(2), in agreement with the exact value of
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-04-13 Thu 14:24</p>
+<p class="date">Created: 2023-04-13 Thu 17:30</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
