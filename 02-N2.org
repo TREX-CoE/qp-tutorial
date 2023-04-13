@@ -127,7 +127,7 @@ plot "data"  using 1:2 with linespoints title "E", \
      -109.278339 title "FCI"
    #+end_src
 
-   [[images/n2-hf.png]]
+   [[./images/n2-hf.png]]
 
    The plot indicates that the variational energy converges to the FCI
    limit. The PT2-corrected energy is a better estimate of the FCI
@@ -165,7 +165,7 @@ replot E_var(x) title "Fit"
 print E_FCI
    #+end_src
   
-   [[images/n2-hf-fit.png]]
+   [[./images/n2-hf-fit.png]]
 
    The following section of the output shows the extrapolated FCI
    energy for the state, with energies provided for various rPT2
@@ -246,7 +246,7 @@ plot "data"  using 1:2 with linespoints title "HF : E", \
      -109.278339 title "FCI"
    #+end_src
 
-   [[images/n2-nat.png]]
+   [[./images/n2-nat.png]]
 
    The plot indicates that the variational energy converges more
    quickly with natural orbitals compared to Hartree-Fock
@@ -278,7 +278,7 @@ replot E_var(x) title "Fit"
 print E_FCI
    #+end_src
   
-   [[images/n2-nat-fit.png]]
+   [[./images/n2-nat-fit.png]]
 
    #+begin_example
 Extrapolated energies
