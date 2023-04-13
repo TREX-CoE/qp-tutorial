@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-13 Thu 12:43 -->
+<!-- 2023-04-13 Thu 14:24 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -280,8 +280,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgcdea780">1. Preparing the EZFIO</a></li>
-<li><a href="#org3a205d2">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a></li>
+<li><a href="#orgf86f9cd">1. Preparing the EZFIO</a></li>
+<li><a href="#org3e5314f">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a>
+<ul>
+<li><a href="#orgf863f2d">2.1. Blind test</a></li>
+<li><a href="#org3286c9b">2.2. A correct run</a></li>
+<li><a href="#orgfee5227">2.3. An improved run</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -395,8 +401,8 @@ The data are taken from <a href="https://pubs.acs.org/doi/10.1021/acs.jctc.8b004
 </table>
 
 
-<div id="outline-container-orgcdea780" class="outline-2">
-<h2 id="orgcdea780"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div id="outline-container-orgf86f9cd" class="outline-2">
+<h2 id="orgf86f9cd"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, let's create an <code>xyz</code> file for formaldehyde, in Angstroms:
@@ -426,7 +432,7 @@ qp set_frozen_core
 </div>
 
 <p>
-The expected Hartree-Fock energy is -113.87599164 au.
+The expected Hartree-Fock energy is -113.8850441 au.
 </p>
 
 <div class="note">
@@ -449,9 +455,13 @@ excited-state energies and inaccurate properties.
 </div>
 </div>
 
-<div id="outline-container-org3a205d2" class="outline-2">
-<h2 id="org3a205d2"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
+<div id="outline-container-org3e5314f" class="outline-2">
+<h2 id="org3e5314f"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
 <div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgf863f2d" class="outline-3">
+<h3 id="orgf863f2d"><span class="section-number-3">2.1</span> Blind test</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
 To enable the calculation of multiple states, you can use <code>qp
   set determinants n_states</code>. In this section, we will compute the
@@ -461,16 +471,412 @@ states:
 
 <div class="org-src-container">
 <pre class="src src-bash">qp set determinants n_states 3
-qp set determinants n_det_max 100000
+qp set determinants n_det_max 50000
 qp run fci | tee formaldehyde.fci1.out
 </pre>
+</div>
+
+<p>
+In multi-state calculations, QP selects a common set of
+determinants for all the states. The consistency between the states 
+is ensured by selecting determinants such that the PT2 correction is
+comparable within the different states.
+</p>
+
+<pre class="example">
+Summary at N_det =        50596
+-----------------------------------
+ 
+# ============ ============================= ============================= =============================
+                     State      1                  State      2                  State      3
+# ============ ============================= ============================= =============================
+# E            -114.15516504                 -113.83477359                 -113.76353848
+# Excit. (au)     0.00000000                    0.32039145                    0.39162656
+# Excit. (eV)     0.00000000                    8.71829886                   10.65670567
+# PT2            -0.08115732     0.00023724    -0.08557406     0.00042319    -0.09793372     0.00034048
+# rPT2           -0.07958935     0.00023266    -0.08389311     0.00041488    -0.09562885     0.00033246
+#
+# E+PT2        -114.23632237     0.00023724  -113.92034765     0.00042319  -113.86147221     0.00034048
+# E+rPT2       -114.23475439     0.00023266  -113.91866670     0.00041488  -113.85916734     0.00033246
+# Excit. (au)     0.00000000     0.00033551     0.31597471     0.00048515     0.37485016     0.00041498
+# Excit. (eV)     0.00000000     0.00912967     8.59811328     0.01320167    10.20019642     0.01129212
+# ============ ============================= ============================= =============================
+</pre>
+
+<p>
+In this calculation, the PT2-corrected excitation energies are 
+8.6 and 10.2 eV. This result is far from the expected values of 3.97
+and 7.3 eV.
+</p>
+
+<p>
+Let us look at the wave functions with <code>qp edit</code> to understand what
+has gone wrong. Go to the end of the file, and seach backwards for
+<code>=</code> to get to the <code>Determinants</code> section:
+</p>
+
+<pre class="example">
+Determinants ::
+
+  -0.956190388929       0.00808349705018        0.0442038650847
+    ++++++++--------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  -0.00466646692438     -0.656599820416 -0.0219363805532
+    ++++++++--------------------------------------------------------
+    +++++++--+------------------------------------------------------
+
+  -0.00466647325716     -0.656599812797 -0.021934926707
+    +++++++--+------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  -0.0160794523102      0.0200969800694 -0.614572492065
+    ++++++++--------------------------------------------------------
+    ++++++-+--+-----------------------------------------------------
+
+  -0.0160794624442      0.020096909905  -0.614572284411
+    ++++++-+--+-----------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  0.0216298014759       -0.00369205179465       0.221702915328
+    ++++++++--------------------------------------------------------
+    ++++++-+----+---------------------------------------------------
+
+</pre>
+
+<p>
+The determinants are shown by rotating 90 degrees clockwise the traditional
+spin-orbital diagrams. The first determinant is the Hartree-Fock
+determinant, and for each determinant, three numbers are given
+which correspond to their CI coefficients in states 1, 2, and 3.
+</p>
+
+<p>
+The first state has a dominant Hartree-Fock character, as expected.
+The second state is a 8-10 singly excited state. Looking at
+the MO coefficients earlier in the file, we can identify this
+excitation as \(\pi \rightarrow \pi^*\), which might be the \(3 ^1
+  A_1\) state. The third state is a 7-11 single excitation, which is
+also a \(\pi \rightarrow \pi^*\).
+</p>
+
+<p>
+Here, QP has not been able to obtain any of the two lowest states,
+due to the symmetry of the system.  Formaldehyde has \(C_{2v}\)
+symmetry, and the lowest excited states, are in the irreducible
+representations \(A_2\) and \(B_2\), whereas the Hartree-Fock
+determinant and the ground state are in \(A_1\).
+As the \(C_{2v}\) symmetry group is Abelian, \(\langle I | H | J
+  \rangle = 0\) if \(|I\rangle\) and \(|J\rangle\) are in different
+irreducible representations. Hence, only determinants in \(A_1\) can
+be selected starting from the Hartree-Fock determinant, and it is
+impossible to describe any of the \(A_2\), \(B_1\) and \(B_2\) states.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3286c9b" class="outline-3">
+<h3 id="org3286c9b"><span class="section-number-3">2.2</span> A correct run</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+A simple solution is to start from a set of determinants containing
+at least one determinant of each irreducible representation.
+The <code>cis</code> program performs the CI in the determinant space
+containing the Hartree-Fock determinant and all possible singly
+excited determinants.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run cis | tee formaldehyde.cis1.out
+</pre>
+</div>
+
+<p>
+The CIS program obtains a first excited state at 4.55 eV, and a
+second one at 8.57 ev:
+</p>
+
+<pre class="example">
+Excitation energies (au)                     (eV)
+          2  0.16732247703939152        4.5529677944444256     
+          3  0.31507863549308013        8.5735216541156269   
+</pre>
+
+<p>
+Looking at the wave function with <code>qp edit</code>, we can confirm we have
+obtained different states:
+</p>
+
+<pre class="example">
+Determinants ::
+
+  0.999999999917        7.74912835069e-11       -9.90449932734e-10
+    ++++++++--------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  5.38429711827e-10     -1.9819140786e-10       0.618374351559
+    ++++++++--------------------------------------------------------
+    +++++++-+-------------------------------------------------------
+
+  5.38460906745e-10     -1.98192930704e-10      0.618374351559
+    +++++++-+-------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  -3.62264652628e-11    0.494296392547  7.50508298599e-10
+    ++++++++--------------------------------------------------------
+    +++++++---+-----------------------------------------------------
+
+  -3.62142767305e-11    0.494296392547  7.52683353491e-10
+    +++++++---+-----------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+</pre>
+
+<p>
+The second state is a 8-11 excitation, and the third state is a 8-13 excitation.
+Both are \(n \rightarrow \pi^*\) excitations.
+This looks correct!
+</p>
+
+<p>
+A last point to address is that the orbitals are biased in favor of
+the ground state. We can make the orbitals more neutral by taking
+the state-average natural orbitals of the CIS calculation, and
+running the CIS again:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run save_natorb
+</pre>
+</div>
+
+<p>
+The occupation number is now close to 4/3 in orbital 8, and close to 1/3 in orbitals
+9 and 10:
+</p>
+
+<pre class="example">
+======== ================ ================
+   MO       Eigenvalue       Cumulative   
+======== ================ ================
+       1     2.0000000000     2.0000000000
+       2     2.0000000000     4.0000000000
+       3     1.9999818795     5.9999818795
+       4     1.9999753489     7.9999572284
+       5     1.9999558595     9.9999130878
+       6     1.9992870769    11.9992001647
+       7     1.9928747860    13.9920749507
+       8     1.3412583826    15.3333333333
+       9     0.3319424230    15.6652757563
+      10     0.3305709648    15.9958467211
+      11     0.0020803062    15.9979270272
+      12     0.0012731375    15.9992001647
+      13     0.0006298587    15.9998300235
+      14     0.0000968613    15.9999268848
+      15     0.0000526128    15.9999794976
+      16     0.0000069726    15.9999864703
+      17     0.0000065101    15.9999929804
+      18     0.0000035978    15.9999965782
+      19     0.0000028594    15.9999994375
+      20     0.0000005625    16.0000000000
+</pre>
+
+<p>
+Running the CIS again gives more compact wave functions:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run cis | tee formaldehyde.cis2.out
+</pre>
+</div>
+
+<pre class="example">
+Determinants ::
+
+  0.999999999983        7.38937386846e-11       -1.01495203432e-10
+    ++++++++--------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  4.38247190443e-11     -0.70362182149  4.4184513023e-10
+    ++++++++--------------------------------------------------------
+    +++++++-+-------------------------------------------------------
+
+  4.37452813195e-11     -0.70362182149  4.42073794179e-10
+    +++++++-+-------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+  -1.27668931035e-11    -4.50577175529e-10      -0.702139343308
+    ++++++++--------------------------------------------------------
+    +++++++--+------------------------------------------------------
+
+  -1.27533052582e-11    -4.50583098529e-10      -0.702139343307
+    +++++++--+------------------------------------------------------
+    ++++++++--------------------------------------------------------
+
+</pre>
+
+<p>
+We are now ready to run the CIPSI calculation, using the CIS as a
+starting point:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set determinants read_wf true
+qp run fci | tee formaldehyde.fci2.out
+</pre>
+</div>
+
+<p>
+The obtained energies are 
+</p>
+
+<pre class="example">
+Summary at N_det =        57859
+-----------------------------------
+
+# ============ ============================= ============================= =============================
+                     State      1                  State      2                  State      3
+# ============ ============================= ============================= =============================
+# E            -114.14841764                 -114.00067483                 -113.88822069
+# Excit. (au)     0.00000000                    0.14774281                    0.26019695
+# Excit. (eV)     0.00000000                    4.02028816                    7.08032228
+# PT2            -0.09039609     0.00016644    -0.09089956     0.00013947    -0.08589297     0.00011280
+# rPT2           -0.08845069     0.00016286    -0.08894268     0.00013646    -0.08421203     0.00011059
+#
+# E+PT2        -114.23881373     0.00016644  -114.09157439     0.00013947  -113.97411366     0.00011280
+# E+rPT2       -114.23686833     0.00016286  -114.08961751     0.00013646  -113.97243272     0.00011059
+# Excit. (au)     0.00000000     0.00023538     0.14723933     0.00021715     0.26470007     0.00020106
+# Excit. (eV)     0.00000000     0.00640504     4.00658794     0.00590886     7.20285848     0.00547116
+# ============ ============================= ============================= =============================
+</pre>
+
+<p>
+The run is too short to get accurate extrapolated energies:
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgfee5227" class="outline-3">
+<h3 id="orgfee5227"><span class="section-number-3">2.3</span> An improved run</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+To improve the results, we can take the state-average natural
+orbitals of the previous CIPSI calculation, and run another CIPSI
+calculation after a CIS. Also, it is worth noting that 50000
+determinants is a very small calculation, and a few million
+determinants should be considered.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run save_natorb
+qp run cis | tee formaldehyde.cis3.out
+</pre>
+</div>
+
+<p>
+The CIS energies are already greatly improved:
+</p>
+
+<pre class="example">
+Excitation energies (au)                     (eV)
+          2  0.15092626062775594        4.1068146738726847     
+          3  0.27896744144194940        7.5909094764640574     
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run fci | tee formaldehyde.fci3.out
+</pre>
+</div>
+
+<p>
+We now obtain:
+</p>
+
+<pre class="example">
+Summary at N_det =       102664
+-----------------------------------
+ 
+# ============ ============================= ============================= =============================
+                     State      1                  State      2                  State      3
+# ============ ============================= ============================= =============================
+# E            -114.18998990                 -114.04558087                 -113.93177469
+# Excit. (au)     0.00000000                    0.14440903                    0.25821521
+# Excit. (eV)     0.00000000                    3.92957148                    7.02639656
+# PT2            -0.05741233     0.00010033    -0.05385474     0.00010112    -0.05119571     0.00009562
+# rPT2           -0.05667372     0.00009904    -0.05320782     0.00009990    -0.05061830     0.00009454
+#
+# E+PT2        -114.24740223     0.00010033  -114.09943561     0.00010112  -113.98297040     0.00009562
+# E+rPT2       -114.24666362     0.00009904  -114.09878869     0.00009990  -113.98239299     0.00009454
+# Excit. (au)     0.00000000     0.00014188     0.14796662     0.00014244     0.26443183     0.00013859
+# Excit. (eV)     0.00000000     0.00386084     4.02637828     0.00387609     7.19555929     0.00377132
+# ============ ============================= ============================= =============================
+</pre>
+
+<p>
+and the extrapolated energy of the first excited state can be
+trusted:
+</p>
+
+<pre class="example">
+Extrapolated energies
+------------------------
+
+ 
+ State            1
+ 
+ =========== ===================
+ minimum PT2 Extrapolated energy
+ =========== ===================
+    -0.0806       -114.24490402
+    -0.1141       -114.24410323
+    -0.1653       -114.24361812
+    -0.2354       -114.24057680
+    -0.3963       -114.23561702
+ =========== ===================
+ 
+ State            2
+ 
+ =========== =================== =================== ===================
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ =========== =================== =================== ===================
+    -0.0764       -114.09779921         0.14710481         4.00292733
+    -0.1089       -114.09690929         0.14719394         4.00535263
+    -0.1568       -114.09614085         0.14747727         4.01306253
+    -0.2284       -114.09400494         0.14657186         3.98842502
+    -0.3890       -114.09084620         0.14477082         3.93941616
+ =========== =================== =================== ===================
+ 
+ State            3
+ 
+ =========== =================== =================== ===================
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ =========== =================== =================== ===================
+    -0.0727       -113.98408191         0.26082211         7.09733376
+    -0.1027       -113.98131946         0.26278377         7.15071327
+    -0.1465       -113.98035226         0.26326586         7.16383168
+    -0.2197       -113.97754657         0.26303023         7.15741994
+    -0.3995       -113.97431532         0.26130171         7.11038439
+ =========== =================== =================== ===================
+
+</pre>
+
+<p>
+The excitation energy of the third state is harder to converge,
+probably because it is a Rydberg state.
+</p>
+
+<p>
+Leaving the calculation run much longer, one should obtain 3.99 eV
+for the 1st state, and 7.11 eV for the 2nd state.
+</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-04-13 Thu 12:43</p>
+<p class="date">Created: 2023-04-13 Thu 14:24</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
