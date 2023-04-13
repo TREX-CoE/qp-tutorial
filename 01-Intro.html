@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-03-21 Tue 17:50 -->
+<!-- 2023-04-13 Thu 08:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Getting Started with Quantum Package</title>
@@ -250,7 +250,7 @@ for the JavaScript code in this tag.
 <div id="org-div-home-and-up">
  <a accesskey="h" href="index.html"> PREV </a>
  |
- <a accesskey="H" href="02-CIPSI.html"> NEXT </a>
+ <a accesskey="H" href="02-N2.html"> NEXT </a>
 </div><div id="content">
 <h1 class="title">Getting Started with Quantum Package</h1>
 <div id="table-of-contents">
@@ -258,10 +258,10 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org26d63b6">1. Introduction</a></li>
-<li><a href="#org8a5526d">2. Environment Setup</a></li>
-<li><a href="#org0c43273">3. Creating an EZFIO Database</a></li>
-<li><a href="#org6474aa6">4. Running Calculations</a></li>
+<li><a href="#org7d16668">1. Introduction</a></li>
+<li><a href="#orgc8cd377">2. Environment Setup</a></li>
+<li><a href="#org48e9226">3. Creating an EZFIO Database</a></li>
+<li><a href="#org3722766">4. Running Calculations</a></li>
 </ul>
 </div>
 </div>
@@ -272,45 +272,53 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-org26d63b6" class="outline-2">
-<h2 id="org26d63b6"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org7d16668" class="outline-2">
+<h2 id="org7d16668"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Welcome to Quantum Package (QP), an open-source environment for developing quantum chemistry programs. QP is designed to be user-friendly and easy to use, while still providing powerful tools for quantum chemistry calculations. In this tutorial, we will guide you through the basics of using QP, including setting up the environment, creating an EZFIO database, and running calculations.
+Welcome to Quantum Package (QP), an open-source environment for
+developing quantum chemistry programs. QP is designed to be
+user-friendly and easy to use, while still providing powerful tools
+for quantum chemistry calculations. In this tutorial, we will guide
+you through the basics of using QP, including setting up the
+environment, creating an EZFIO database, and running calculations.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org8a5526d" class="outline-2">
-<h2 id="org8a5526d"><span class="section-number-2">2</span> Environment Setup</h2>
+<div id="outline-container-orgc8cd377" class="outline-2">
+<h2 id="orgc8cd377"><span class="section-number-2">2</span> Environment Setup</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Before using QP, you need to set up the environment. QP requires a few environment variables to be set, so that it can find the necessary libraries and programs. Here's how you can set up the environment:
+Before using QP, you need to set up the environment. QP requires a
+few environment variables to be set, so that it can find the
+necessary libraries and programs. Here's how you can set up the
+environment:
 </p>
 
+<div class="important">
 <ol class="org-ol">
-<li>Clone QP from <a href="https://github.com/QuantumPackage/qp2">https://github.com/QuantumPackage/qp2</a>.</li>
+<li>Clone QP from <a href="https://github.com/QuantumPackage/qp2">https://github.com/QuantumPackage/qp2</a></li>
 <li>Install the dependencies and configure the compilation by running:</li>
 </ol>
 
 <div class="org-src-container">
-<pre class="src src-bash">source quantum_package.rc
-./configure -i all
+<pre class="src src-bash">./configure -i all
 ./configure -c ./config/gfortran_avx.cfg
+source quantum_package.rc
 ninja
 </pre>
 </div>
 
-<div class="note">
 <p>
-The QP<sub>ROOT</sub> environment variable refers to the path of the <code>qp2</code> directory.
+Note that <code>$QP_ROOT</code> refers to the <code>qp2</code> directory.
 </p>
 
 </div>
 
 <p>
-Alternatively, you can use the QP shell to interact with QP. Here's
-how you can start the QP shell:
+You can use your shell, or alternatively the QP shell to interact
+with QP. Here's how you can start the QP shell:
 </p>
 
 <div class="org-src-container">
@@ -324,8 +332,8 @@ Now you're ready to start using QP!
 </div>
 </div>
 
-<div id="outline-container-org0c43273" class="outline-2">
-<h2 id="org0c43273"><span class="section-number-2">3</span> Creating an EZFIO Database</h2>
+<div id="outline-container-org48e9226" class="outline-2">
+<h2 id="org48e9226"><span class="section-number-2">3</span> Creating an EZFIO Database</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 QP stores input and output data in a database, called the <i>EZFIO directory</i>.
@@ -333,10 +341,9 @@ To interact with the database, QP provides multiple shell functions,
 scripts, and programs. Here's how you can create an EZFIO database:
 </p>
 
-<p>
-Create a file with a molecular geometry in either <i>xyz</i> or <i>z-matrix</i> format.
-For example, let's create a file for the water molecule in <i>xyz</i> format:
-</p>
+<ol class="org-ol">
+<li>Create a file with a molecular geometry in either <i>xyz</i> or <i>z-matrix</i> format. For example, let's create a file for the water molecule in <i>xyz</i> format:</li>
+</ol>
 
 <div class="org-src-container">
 <pre class="src src-text">3
@@ -347,10 +354,9 @@ H       0.756950272703377558   0.  -0.585882234512562827
 </pre>
 </div>
 
-<p>
-Create an EZFIO database containing the geometry and the basis set parameters
-for the cc-pVDZ basis set:
-</p>
+<ol class="org-ol">
+<li>Create an EZFIO database containing the geometry and the basis set parameters for the cc-pVDZ basis set:</li>
+</ol>
 
 <div class="org-src-container">
 <pre class="src src-bash">qp create_ezfio --basis=cc-pvdz h2o.xyz
@@ -372,11 +378,44 @@ another EZFIO database, use
 Note that when running interactively with <code>qpsh</code>, the current EZFIO
 database is displayed in the terminal prompt.
 </p>
+
+<p>
+The EZFIO database is a directory containing subdirectories. Each
+subdirectory contains files. Each data is stored in a text file:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ ls h2o.ezfio/
+ao_basis              davidson         mol_properties     qmcchem
+ao_one_e_ints         density_for_dft  mo_one_e_ints      scf_utils
+ao_two_e_erf_ints     determinants     mo_two_e_erf_ints  tc_keywords
+ao_two_e_ints         dft_keywords     mo_two_e_ints      trexio
+basis                 dressing         mpn                two_body_rdm
+becke_numerical_grid  electrons        mu_of_r            utils
+cc_utils              ezfio            nuclei             utils_cc
+cipsi                 fci_tc_bi        perturbation       utils_trust_region
+cipsi_tc_bi_ortho     general_mrci     pseudo             work
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ ls h2o.ezfio/ao_basis/
+ao_basis      ao_expo.gz     ao_nucl.gz   ao_prim_num.gz
+ao_cartesian  ao_md5         ao_num       primitives_normalized
+ao_coef.gz    ao_normalized  ao_power.gz
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ cat h2o.ezfio/ao_basis/ao_num 
+                  25
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org6474aa6" class="outline-2">
-<h2 id="org6474aa6"><span class="section-number-2">4</span> Running Calculations</h2>
+<div id="outline-container-org3722766" class="outline-2">
+<h2 id="org3722766"><span class="section-number-2">4</span> Running Calculations</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Now that you have an EZFIO database, you can use QP to run
@@ -460,7 +499,7 @@ shell interaction more user-friendly.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-03-21 Tue 17:50</p>
+<p class="date">Created: 2023-04-13 Thu 08:56</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
