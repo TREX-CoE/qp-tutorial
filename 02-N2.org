@@ -152,10 +152,10 @@ plot "data"  using 5:2 with linespoints title "", \
    calculations with different ~N_det~:
 
    \[
-   E_{\text{CIPSI}} (rPT2) = E + \alpha rPT2
+   E_{\text{CIPSI}} (\text{rPT2}) = E + \alpha\, \text{rPT2}
    \]
 
-   Fitting the curve with Gnuplot over the last few points (for $|E_{\text{PT2}}| \le -0.05$), 
+   Fitting the curve with Gnuplot over the last few points (for $|\text{rPT2}| \le -0.05$), 
    one obtains a FCI estimate of -109.278 au.
 
    #+begin_src gnuplot
