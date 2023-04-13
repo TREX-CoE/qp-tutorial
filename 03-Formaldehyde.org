@@ -4,6 +4,7 @@
 #+HTML_LINK_UP: 02-N2.html
 #+HTML_LINK_HOME: index.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
+#+PROPERTY: header-args :exports code :eval no
 
 
 In this part of the tutorial, you will learn how to perform
