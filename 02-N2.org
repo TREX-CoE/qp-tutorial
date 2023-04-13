@@ -10,33 +10,32 @@ In this part of the tutorial, you will learn how to perform
 frozen-core Full Configuration Interaction (FCI) calculations using
 the Configuration Interaction by Perturbation of the
 Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
-ground state of molecules. We will use Formaldehyde as an example in
-the 6-31g* basis set.
-
-   [[./images/formaldehyde.png]]
+ground state of molecules. We will use the dinitrogen molecule near the
+equilibrium bond length, with the cc-pVDZ basis set.
 
 * Running FCI calculations
 ** Preparing the EZFIO
 
- First, let's create an ~xyz~ file for Formaldehyde:
+ First, let's create a ~z-matrix~ file =n2.zmt= for dinitrogen, at a distance
+ of 2.118 atomic units:
 
- #+begin_src text :tangle formaldehyde.xyz
-4
-Formaldehyde
-C       0.00000000       0.00000000      -0.60298508
-O       0.00000000       0.00000000       0.60539399
-H       0.00000000       0.93467313      -1.18217476
-H       0.00000000      -0.93467313      -1.18217476
+ #+begin_src text :tangle n2.zmt
+n
+n 1 r
+
+r 2.118
  #+end_src
 
  Next, create an EZFIO database containing the geometry and the basis
- set parameters for the 6-31g* basis set:
+ set parameters for the cc-pVDZ basis set. Specify that atomic units
+ are used with the ~--au~ flag:
+
 
  #+begin_src bash
-qp create_ezfio -b 6-31g_star formaldehyde.xyz
+qp create_ezfio --au -b cc-pvdz n2.zmt
  #+end_src
 
- This will create a directory named =formaldehyde.ezfio= in the current
+ This will create a directory named =n2.ezfio= in the current
  working directory, and it will be selected as the currently used EZFIO
  directory in the current shell.
 
@@ -44,10 +43,12 @@ qp create_ezfio -b 6-31g_star formaldehyde.xyz
  run a Hartree-Fock calculation:
 
  #+begin_src bash
-qp run scf | tee formaldehyde.scf.out
+qp run scf | tee n2.scf.out
  #+end_src
 
- and to freeze the core orbitals:
+ The expected HF energy is -108.949378 atomic units.
+ 
+Then, freeze the core orbitals:
 
  #+begin_src bash
 qp set_frozen_core
@@ -67,7 +68,7 @@ qp set determinants n_det_max 50000
  Next, we can run the frozen-core CIPSI calculation:
 
  #+begin_src bash
-qp run fci | tee formaldehyde.fci1.out
+qp run fci | tee n2.fci1.out
  #+end_src
 
  This command will perform a CIPSI calculation in the full FCI space
@@ -75,6 +76,91 @@ qp run fci | tee formaldehyde.fci1.out
  determinants is larger than 50 000. The standard output will be saved
  to the file =formaldehyde.fci1.out=.
 
+ The output gives information about the convergence of the
+ wavefunction, the energy, and the correlation energy of the system.
+
+** Variational energy and PT2 contribution
+
+  The output shows results at different numbers of determinants
+  (~N_det~) in the wavefunction (1, 9, 24, 50, ...). For each
+  ~N_det~, you can see the energy (E), the PT2 and rPT2
+  corrections, and the total energy with these corrections (E+PT2 and
+  E+rPT2). The PT2 and rPT2 corrections represent the second-order
+  perturbation theory corrections and renormalized PT2 corrections,
+  respectively.
+
+  #+begin_example
+Summary at N_det =        52178
+-----------------------------------
+
+# ============ =============================
+                     State      1
+# ============ =============================
+# E            -109.26874586
+# PT2            -0.00944319     0.00001152
+# rPT2           -0.00942889     0.00001151
+#
+# E+PT2        -109.27818905     0.00001152
+# E+rPT2       -109.27817475     0.00001151
+# ============ =============================
+  #+end_example
+
+  A statistical error bar is provided as the PT2 contribution is
+  computed using a stochastic algorithm.
+
+  You can create the plot showing the convergence of the energy as a
+  function of the size of the wave function. First extract the useful
+  data from the output file,
+
+  #+begin_src bash
+qp_extract_cipsi_data.py n2.fci1.out > data
+  #+end_src
+
+  and then give the following commands to gnuplot
+
+  #+begin_src gnuplot
+set grid
+set xlabel "N_{det}"
+set ylabel "Energy"
+set log x
+plot "data"  using 1:2 with linespoints title "E", \
+     "data"  using 1:($2+$3) with linespoints title "E+PT2", \
+     -109.278339 title "FCI"
+  #+end_src
+
+  [[images/n2-hf.png]]
+
+  The plot indicates that the variational energy converges to the FCI
+  limit. The PT2-corrected energy is a better estimate of the FCI
+  energy, but it overestimate its value.
+  
+  One can also plot the variational energy as a function of the
+  renormalized PT2 correction as follows:
+
+  #+begin_src gnuplot
+set grid
+set xlabel "E_{PT2}"
+set ylabel "Energy"
+unset log x
+set xrange [:0.]
+plot "data"  using 5:2 with linespoints title "", \
+     -109.278339 title "FCI"
+  #+end_src
+  
+  Fitting the curve over the last few points (for $|E_{\text{PT2}}| \le -0.05$), 
+  on obtains a FCI estimate of -109.278 au, in agreement with the
+  exact FCI energy:
+
+  #+begin_src gnuplot
+E_var(E_PT2) = a*E_PT2 + E_FCI
+fit [-0.05:0.] E_var(x) "data" using 5:2 via a, E_FCI
+replot E_var(x) title "Fit"
+print E_FCI
+  #+end_src
+  
+  [[images/n2-hf-fit.png]]
+
+  
 ** Using Natural Orbitals
 
  We can improve the convergence of CIPSI by using natural orbitals. To
@@ -105,38 +191,7 @@ qp run fci | tee formaldehyde.fci2.out
 
 * Key points from the output files
 
-  The output gives information about the convergence of the
-  wavefunction, the energy, and the correlation energy of the system.
-
 ** Variational energy and PT2 contribution
-
-  The output shows results at different numbers of determinants
-  (~N_det~) in the wavefunction (1, 9, 21, 46, ...). For each
-  ~N_det~, you can see the energy (E), the PT2 and rPT2
-  corrections, and the total energy with these corrections (E+PT2 and
-  E+rPT2). The PT2 and rPT2 corrections represent the second-order
-  perturbation theory corrections and renormalized PT2 corrections,
-  respectively.
-
-  #+begin_example
-Summary at N_det =        31824
------------------------------------
-
-# ============ =============================
-                     State      1
-# ============ =============================
-# E            -114.16730139
-# PT2            -0.01938121     0.00003730
-# rPT2           -0.01931613     0.00003717
-#
-# E+PT2        -114.18668259     0.00003730
-# E+rPT2       -114.18661752     0.00003717
-# ============ =============================
-  #+end_example
-
-  A statistical error bar is provided as the PT2 contribution is
-  computed using a stochastic algorithm.
-
 
   You can create the plots showing the convergence of the energy as a
   function of the size of the wave function. First extract the useful
