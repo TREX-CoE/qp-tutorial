@@ -1,8 +1,8 @@
 #+TITLE: Frozen-Core FCI Calculations using CIPSI
 #+AUTHOR: Anthony Scemama
 #+LANGUAGE:  en
-#+HTML_LINK_UP: 01-Intro.html
-#+HTML_LINK_HOME: 03-.html
+#+HTML_LINK_UP: 02-N2.html
+#+HTML_LINK_HOME: index.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 
 
