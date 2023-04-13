@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-13 Thu 09:51 -->
+<!-- 2023-04-13 Thu 12:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -280,30 +280,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org36eb1ac">1. Running FCI calculations</a>
-<ul>
-<li><a href="#orgcca257d">1.1. Preparing the EZFIO</a></li>
-<li><a href="#orgf5e656f">1.2. Running a first frozen-Core CIPSI Calculation</a></li>
-<li><a href="#org16c148c">1.3. Using Natural Orbitals</a></li>
-<li><a href="#org9605888">1.4. Running a second frozen-Core CIPSI Calculation</a></li>
-</ul>
-</li>
-<li><a href="#orgbfe4917">2. Key points from the output files</a>
-<ul>
-<li><a href="#org535c4a5">2.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org02605fe">2.2. Extrapolated energies</a></li>
-</ul>
-</li>
+<li><a href="#orgcdea780">1. Preparing the EZFIO</a></li>
+<li><a href="#org3a205d2">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a></li>
 </ul>
 </div>
 </div>
 <p>
 In this part of the tutorial, you will learn how to perform
-frozen-core Full Configuration Interaction (FCI) calculations using
-the Configuration Interaction by Perturbation of the
-Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
-ground state of molecules. We will use Formaldehyde as an example in
-the 6-31G<sup>*</sup> basis set.
+excited state calculations using the Configuration Interaction by
+Perturbation of the Single-determinant (CIPSI) algorithm in Quantum
+Package (QP). As an illustration, we will compute the energies of the
+two lowest excited states of the formaldehyde molecule in the aug-cc-pVDZ
+basis set.
 </p>
 
 
@@ -312,15 +300,106 @@ the 6-31G<sup>*</sup> basis set.
 </p>
 </div>
 
-<div id="outline-container-org36eb1ac" class="outline-2">
-<h2 id="org36eb1ac"><span class="section-number-2">1</span> Running FCI calculations</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-orgcca257d" class="outline-3">
-<h3 id="orgcca257d"><span class="section-number-3">1.1</span> Preparing the EZFIO</h3>
-<div class="outline-text-3" id="text-1-1">
 <p>
-First, let's create an <code>xyz</code> file for Formaldehyde:
+The following table displays, in eV, the theoretical best estimates (TBE) of the
+excitation energies of formaldehyde.
+\(V\) denotes valence states, and \(R\) denotes Rydberg states.
+The data are taken from <a href="https://pubs.acs.org/doi/10.1021/acs.jctc.8b00406">https://pubs.acs.org/doi/10.1021/acs.jctc.8b00406</a> .
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Transition</th>
+<th scope="col" class="org-right">TBE (eV)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{1}\mathrm{A_2}  (\mathrm{V};n \rightarrow \pi^\star)\)</td>
+<td class="org-right">3.97</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{1}\mathrm{B_2}  (\mathrm{R};n \rightarrow 3s)\)</td>
+<td class="org-right">7.3</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 2\:^{1}\mathrm{B_2}  (\mathrm{R};n \rightarrow 3p)\)</td>
+<td class="org-right">8.14</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 2\:^{1}\mathrm{A_1}  (\mathrm{R};n \rightarrow 3p)\)</td>
+<td class="org-right">8.27</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 2\:^{1}\mathrm{A_2}  (\mathrm{R};n \rightarrow 3p)\)</td>
+<td class="org-right">8.5</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{1}\mathrm{B_1}  (\mathrm{V})\)</td>
+<td class="org-right">9.21</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 3\:^{1}\mathrm{A_1}  (\mathrm{V};\pi \rightarrow \pi^\star)\)</td>
+<td class="org-right">9.26</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{3}\mathrm{A_2}  (\mathrm{V};n \rightarrow \pi^\star)\)</td>
+<td class="org-right">3.58</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{3}\mathrm{A_1}  (\mathrm{V};\pi \rightarrow \pi^\star)\)</td>
+<td class="org-right">6.07</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{3}\mathrm{B_2}  (\mathrm{R};n \rightarrow 3s)\)</td>
+<td class="org-right">7.14</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 2\:^{3}\mathrm{B_2}  (\mathrm{R};n \rightarrow 3p)\)</td>
+<td class="org-right">7.96</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 2\:^{3}\mathrm{A_1}  (\mathrm{R};n \rightarrow 3p)\)</td>
+<td class="org-right">8.15</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A_1} \rightarrow 1\:^{3}\mathrm{B_1}  (\mathrm{R})\)</td>
+<td class="org-right">8.42</td>
+</tr>
+
+<tr>
+<td class="org-left">\(1\:^{1}\mathrm{A^\prime} \rightarrow 1\:^{1}\mathrm{A^{\prime\prime}} [\mathrm{F}] (\mathrm{V};n \rightarrow \pi^\star)\)</td>
+<td class="org-right">2.8</td>
+</tr>
+</tbody>
+</table>
+
+
+<div id="outline-container-orgcdea780" class="outline-2">
+<h2 id="orgcdea780"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+First, let's create an <code>xyz</code> file for formaldehyde, in Angstroms:
 </p>
 
 <div class="org-src-container">
@@ -335,272 +414,63 @@ H       0.00000000      -0.93467313      -1.18217476
 
 <p>
 Next, create an EZFIO database containing the geometry and the basis
-set parameters for the 6-31g* basis set:
+set parameters for the aug-cc-pVDZ basis set, and run the Hartree-Fock
+calculation.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">qp create_ezfio -b 6-31g_star formaldehyde.xyz
+<pre class="src src-bash">qp create_ezfio -b aug-cc-pvdz formaldehyde.xyz
+qp run scf | tee formaldehyde.scf.out
+qp set_frozen_core
 </pre>
 </div>
 
 <p>
-This will create a directory named <code>formaldehyde.ezfio</code> in the current
-working directory, and it will be selected as the currently used EZFIO
-directory in the current shell.
+The expected Hartree-Fock energy is -113.87599164 au.
+</p>
+
+<div class="note">
+<p>
+Excited states generally have diffuse character. To accurately
+describe excited states, it is necessary to use a basis set that
+includes diffuse atomic basis functions. Diffuse functions are
+orbitals that are spatially extended beyond the region where the
+valence electrons are found.
 </p>
 
 <p>
-To perform a frozen-core FCI calculation using CIPSI, we first need to
-run a Hartree-Fock calculation:
+When excited states are computed using a basis set that lacks diffuse
+functions, the computed wavefunctions may have insufficiently diffuse
+character and be of lower quality, resulting in overestimated 
+excited-state energies and inaccurate properties.
 </p>
 
-<div class="org-src-container">
-<pre class="src src-bash">qp run scf | tee formaldehyde.scf.out
-</pre>
-</div>
-
-<p>
-and to freeze the core orbitals:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">qp set_frozen_core
-</pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf5e656f" class="outline-3">
-<h3 id="orgf5e656f"><span class="section-number-3">1.2</span> Running a first frozen-Core CIPSI Calculation</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-Now, let's run a frozen-core CIPSI calculation using the <code>qp run fci</code>
-command. The <code>fci</code> program is used to perform CIPSI calculations in
-the full configuration interaction (FCI) space.
-We will set the maximum number of determinants to 50 000 using the <code>qp set determinants</code> command:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">qp set determinants n_det_max 50000
-</pre>
-</div>
-
-<p>
-Next, we can run the frozen-core CIPSI calculation:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">qp run fci | tee formaldehyde.fci1.out
-</pre>
-</div>
-
-<p>
-This command will perform a CIPSI calculation in the full FCI space
-with Hartree-Fock orbitals and will stop when the number of
-determinants is larger than 50 000. The standard output will be saved
-to the file <code>formaldehyde.fci1.out</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org16c148c" class="outline-3">
-<h3 id="org16c148c"><span class="section-number-3">1.3</span> Using Natural Orbitals</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-We can improve the convergence of CIPSI by using natural orbitals. To
-do this, we first need to save the natural orbitals using the qp run
-save<sub>natorb</sub> command:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">qp run save_natorb
-</pre>
-</div>
-
-<p>
-This will save the natural orbitals to the EZFIO database.
-</p>
-</div>
-</div>
-
-<div id="outline-container-org9605888" class="outline-3">
-<h3 id="org9605888"><span class="section-number-3">1.4</span> Running a second frozen-Core CIPSI Calculation</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-Next, we can run the frozen-core CIPSI calculation again, but this time using the natural orbitals:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">qp set determinants n_det_max 1e6
-qp run fci | tee formaldehyde.fci2.out
-</pre>
-</div>
-
-<p>
-This command will perform a CIPSI calculation in the full FCI space
-using up to 1 million determinants and the natural orbitals. The
-standard output will be saved to the file formaldehyde.fci2.out.
-</p>
-
-<p>
-Congratulations! You have learned how to perform frozen-core CIPSI
-calculations using Quantum Package.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgbfe4917" class="outline-2">
-<h2 id="orgbfe4917"><span class="section-number-2">2</span> Key points from the output files</h2>
+<div id="outline-container-org3a205d2" class="outline-2">
+<h2 id="org3a205d2"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-The output gives information about the convergence of the
-wavefunction, the energy, and the correlation energy of the system.
-</p>
-</div>
-
-<div id="outline-container-org535c4a5" class="outline-3">
-<h3 id="org535c4a5"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-The output shows results at different numbers of determinants
-(<code>N_det</code>) in the wavefunction (1, 9, 21, 46, &#x2026;). For each
-<code>N_det</code>, you can see the energy (E), the PT2 and rPT2
-corrections, and the total energy with these corrections (E+PT2 and
-E+rPT2). The PT2 and rPT2 corrections represent the second-order
-perturbation theory corrections and renormalized PT2 corrections,
-respectively.
-</p>
-
-<pre class="example">
-Summary at N_det =        31824
------------------------------------
-
-# ============ =============================
-                     State      1
-# ============ =============================
-# E            -114.16730139
-# PT2            -0.01938121     0.00003730
-# rPT2           -0.01931613     0.00003717
-#
-# E+PT2        -114.18668259     0.00003730
-# E+rPT2       -114.18661752     0.00003717
-# ============ =============================
-</pre>
-
-<p>
-A statistical error bar is provided as the PT2 contribution is
-computed using a stochastic algorithm.
-</p>
-
-
-<p>
-You can create the plots showing the convergence of the energy as a
-function of the size of the wave function. First extract the useful
-data from the output file,
+To enable the calculation of multiple states, you can use <code>qp
+  set determinants n_states</code>. In this section, we will compute the
+ground state and the two lowest states of formaldehyde, namely three
+states:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-bash">qp_extract_cipsi_data.py formaldehyde.fci1.out &gt; data
-qp_extract_cipsi_data.py formaldehyde.fci2.out &gt; data2
+<pre class="src src-bash">qp set determinants n_states 3
+qp set determinants n_det_max 100000
+qp run fci | tee formaldehyde.fci1.out
 </pre>
-</div>
-
-<p>
-and then give the following commands to gnuplot
-</p>
-
-<div class="org-src-container">
-<pre class="src src-gnuplot">set xlabel "N_{det}"
-set ylabel "Energy"
-set log x
-plot "data"  using 1:2 with linespoints title "E(HF)", \
-     "data2" using 1:2 with linespoints title "E(Nat)", \
-     "data"  using 1:($2+$5) with linespoints title "E(HF)+PT2", \
-     "data2" using 1:($2+$5) with linespoints title "E(Nat)+PT2"
-</pre>
-</div>
-
-
-<div class="figure">
-<p><object type="image/svg+xml" data="./images/cipsi_econv.svg" class="org-svg">
-Sorry, your browser does not support SVG.</object>
-</p>
-</div>
-
-<p>
-The plot indicates that the variational energy converges more
-quickly with natural orbitals compared to Hartree-Fock
-orbitals. Moreover, for large numbers of determinants, the value
-of E+PT2 is more stable, as seen from the flatter curve.
-</p>
-</div>
-</div>
-
-
-
-<div id="outline-container-org02605fe" class="outline-3">
-<h3 id="org02605fe"><span class="section-number-3">2.2</span> Extrapolated energies</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-This section of the output shows the minimum PT2 extrapolated
-energy for the state, with energies provided for various rPT2
-values. These values provide an estimation of the energy closer to
-the FCI limit.
-</p>
-
-<pre class="example">
-Extrapolated energies
-------------------------
-
-
- State            1
-
- =========== ===================
- minimum PT2 Extrapolated energy
- =========== ===================
-    -0.0193       -114.18753808
-    -0.0223       -114.18741448
-    -0.0269       -114.18715515
-    -0.0403       -114.18755571
-    -0.0674       -114.18791213
-    -0.1032       -114.18795665
-    -0.1433       -114.18786737
- =========== ===================
-</pre>
-
-<p>
-The FCI energy is estimated by making a linear fit using all the
-calculations with different N<sub>det</sub>:
-</p>
-
-<p>
-\[
-E_{\text{CIPSI}} (rPT2) = E + \alpha rPT2
-\]
-</p>
-
-
-<div class="figure">
-<p><img src="./images/fit_e_pt2.png" alt="fit_e_pt2.png" />
-</p>
-</div>
-
-<p>
-The extrapolated energies in the table are obtained using different
-numbers of points in the fit. The first column displays the value of
-the PT2 of the first point used in the extrapolation. By providing
-extrapolated values with multiple points, the user can determine the
-stability of the extrapolation. In this case, we can confidently state
-that the extrapolated FCI value is close to -114.1875.
-</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-04-13 Thu 09:51</p>
+<p class="date">Created: 2023-04-13 Thu 12:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
