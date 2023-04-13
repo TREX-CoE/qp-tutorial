@@ -15,7 +15,7 @@ equilibrium bond length, with the cc-pVDZ basis set.
 
 * Preparing the EZFIO
 
-  First, let's create a ~z-matrix~ file =n2.zmt= for dinitrogen, at a distance
+  First, let's create a z-matrix file =n2.zmt= for dinitrogen, at a distance
   of 2.118 atomic units:
 
   #+begin_src text :tangle n2.zmt
@@ -55,34 +55,42 @@ qp set_frozen_core
 
 * Running a first frozen-Core CIPSI Calculation
 
-  Now, let's run a frozen-core CIPSI calculation using the ~qp run fci~
-  command. The ~fci~ program is used to perform CIPSI calculations in
-  the full configuration interaction (FCI) space.
-  We will set the maximum number of determinants to 50 000 using the ~qp set determinants~ command:
-
+  To perform the frozen-core FCI calculation using the CIPSI algorithm
+  in QP for dinitrogen, we will use the ~qp run fci~ command. Note that
+  the ~fci~ program is used to perform CIPSI calculations in the full
+  configuration interaction (FCI) space defined by the set of active
+  orbitals. Since we have already defined all the valence MOs as
+  ~Active~ and the two core MOs as ~Core~ using the ~qp set_frozen_core~
+  command, we can now set the maximum number of determinants to 50 000
+  using the ~qp set~ command.
+  
   #+begin_src bash
 qp set determinants n_det_max 50000
   #+end_src
 
-  Next, we can run the frozen-core CIPSI calculation:
+  Next, we can run the frozen-core CIPSI calculation using the ~qp run
+  fci~ command:
 
   #+begin_src bash
 qp run fci | tee n2.fci1.out
   #+end_src
 
-  This command will perform a CIPSI calculation in the full FCI space
-  with Hartree-Fock orbitals and will stop when the number of
-  determinants is larger than 50 000. The standard output will be saved
-  to the file =n2.fci1.out=.
-
+  When running the ~qp run fci~ command, the CIPSI calculation is
+  executed, and it stops when the number of determinants is larger
+  than the number set with ~qp set determinants n_det_max~. The output is
+  displayed in the terminal, but we can save it to a file using the
+  ~tee~ command. In this case, the standard output will be saved to the
+  file =n2.fci1.out=.
+  
 ** Variational energy and PT2 contribution
 
-   The output gives information about the convergence of the
-   wavefunction, the energy, and the correlation energy of the system.
-
-   The output shows results at different numbers of determinants
+   The output of the CIPSI calculation gives information about the
+   convergence of the wavefunction, the energy, and the correlation
+   energy of the system.
+   
+   The output displays results at different numbers of determinants
    (~N_det~) in the wavefunction (1, 9, 24, 50, ...). For each
-   ~N_det~, you can see the energy (E), the PT2 and rPT2
+   ~N_det~, the output shows the energy (E), the PT2 and rPT2
    corrections, and the total energy with these corrections (E+PT2 and
    E+rPT2). The PT2 and rPT2 corrections represent the second-order
    perturbation theory corrections and renormalized PT2 corrections,
@@ -107,10 +115,10 @@ Summary at N_det =        52178
    A statistical error bar is provided as the PT2 contribution is
    computed using a stochastic algorithm.
 
-   You can create the plot showing the convergence of the energy as a
-   function of the size of the wave function. First extract the useful
-   data from the output file,
-
+   To create a plot showing the convergence of the energy as a
+   function of the size of the wavefunction, first extract the
+   relevant data from the output file:
+   
    #+begin_src bash
 qp_extract_cipsi_data.py n2.fci1.out > data
    #+end_src
@@ -131,12 +139,12 @@ plot "data"  using 1:2 with linespoints title "E", \
 
    The plot indicates that the variational energy converges to the FCI
    limit. The PT2-corrected energy is a better estimate of the FCI
-   energy, but it overestimate its value.
+   energy, but it may overestimate its value.
   
 ** Extrapolated FCI energy
     
-   One can also plot the variational energy as a function of the
-   renormalized PT2 correction as follows:
+   To plot the variational energy as a function of the renormalized
+   PT2 correction, use the following Gnuplot commands:
 
    #+begin_src gnuplot
 set grid
@@ -156,7 +164,7 @@ plot "data"  using 5:2 with linespoints title "", \
    \]
 
    Fitting the curve with Gnuplot over the last few points (for $|\text{rPT2}| \le -0.05$), 
-   one obtains a FCI estimate of -109.278 au.
+   one obtains an FCI estimate of -109.278 au.
 
    #+begin_src gnuplot
 E_var(E_PT2) = a*E_PT2 + E_FCI
@@ -168,7 +176,7 @@ print E_FCI
    [[./images/n2-hf-fit.png]]
 
    The following section of the output shows the extrapolated FCI
-   energy for the state, with energies provided for various rPT2
+   energy for the ground state, with energies provided for various rPT2
    values. 
 
    #+begin_example
@@ -196,31 +204,25 @@ Extrapolated energies
    the PT2 of the first point used in the extrapolation. By providing
    extrapolated values with multiple points, the user can determine the
    stability of the extrapolation. In this case, we can confidently state
-   that the extrapolated FCI value is close to -109.27800.
+   that the extrapolated FCI value is close to -109.2782(2).
    
 * Saving Natural Orbitals
 
   We can improve the convergence of CIPSI by using natural orbitals. To
-  do this, we first need to save the natural orbitals:
+  do this, we first need to save the natural orbitals into the EZFIO database:
 
   #+begin_src bash
 qp run save_natorb
   #+end_src
 
-  This will save the natural orbitals into the EZFIO database.
-
 * Running a second frozen-Core CIPSI Calculation
 
-  Next, we can run the frozen-core CIPSI calculation again, but this
+  We can run the frozen-core CIPSI calculation again, but this
   time using the natural orbitals:
 
   #+begin_src bash
 qp run fci | tee n2.fci2.out
   #+end_src
-
-  This command will perform a CIPSI calculation in the full FCI space
-  using up to at least 50 000 determinants with the natural orbitals. The
-  standard output will be saved to the file =n2.fci2.out=.
 
 ** Variational energy and PT2 contribution
 
