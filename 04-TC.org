@@ -1,0 +1,130 @@
+#+TITLE: Transcorrelated calculations
+#+AUTHOR: Abdallah Ammar and Emmanuel Giner
+#+LANGUAGE: en
+#+HTML_LINK_UP: 03-Formaldehyde.html
+#+HTML_LINK_HOME: index.html
+#+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
+#+PROPERTY: header-args :exports code :eval no
+
+Congratulations! By reaching this point in the tutorial, you've made 
+fantastic progress and are one step closer to mastering the code. In
+this part of the tutorial you will learn how you can easly run a 
+calculation with an explicitly correlated wavefunctions in the framework
+of the Transcorrelated (TC) theory.
+
+* CI vs CI-Jastrow wavefunction
+
+  In the precious sections, all the ground and the excited states 
+  calculations were made with a CI wavefunction,
+  \[
+  \Psi = \sum_I c_I D_I
+  \]
+  where $D_I$ are the Slater determinants. In this section, we will
+  go one step further to include dynamical correlation via a Jastrow
+  factor,
+  \[
+  \Psi = \sum_I c_I D_I e^{\tau}.
+  \]
+  [[https://doi.org/10.1063/5.0044683][The Jastrow]] factor implemented in the QP has the following expression,
+  \[
+  \tau = \sum_{i,j} u(r_{ij}) v(r_i) v(r_j),
+  \]
+  where the 2-electron function is inspired by range-separated DFT,
+  \[
+  u(r_{12}) = \frac{r_{12} \,  \left[ 1 - \text{erf} \left( \mu r_{12} \right)  \right]}{2}
+    - \frac{\exp \left[ -\left( \mu r_{12} \right)^2 \right] }{2 \sqrt{\pi} \mu}
+  \]
+  and $v$ is an envelope that has been addded to cancel out the correlation
+  when electrons are closed to nuclei,
+  \[
+  v(\mathbf{r}) = \Pi_A \left[ 1 - 
+    \exp \left( -\alpha_A \left( \mathbf{r} - \mathbf{R_A} \right)^2 \right) \right],
+  \]
+  where the index $A$ runs over the nuclei.
+  The parameter $\mu$ controls both the depth of the coulomb hole and the typical 
+  range of the correlation factor in $r_{12}$. In practice, $\mu=0.87$ is optimal
+  to correlate valence electron and therefore only the parameter $\alpha$ need to 
+  be optmized. This parameter depends on the atom as wwll as the choice of the 
+  basis set. In this tutorial, the optimal value of $\alpha$ will be given.
+  
+
+
+
+* Installation
+
+  Since the TC algorithms are developped very recently, you need to 
+  switch from ~master~ to ~dev-stable-tc-scf~. This can be done easely
+  by few steps.
+  #+begin_src bash
+  # First go to the repository of QP
+  cd qp2
+  # switch to the branch of TC developpement
+  git checkout -b dev-stable-tc-scf
+  # pull the TC codes to your repository
+  git pull origin dev-stable-tc-scf
+  # now compile the code by doing
+  ninja clean
+  ninja
+  #+end_src
+
+  Make sur that you have sourced before compiling
+  #+begin_src bash
+  source quantum_package.rc
+  #+end_src
+  
+  Now you can start running TC calculation! ;)
+  
+
+* TC self consisten field
+
+  In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
+  provide a good start point. Although we can use the HF orbitals in the TC
+  calculations, it is better to start from optimized orbitals to accelerate
+  the convergence in term of the number of determinants.
+  The TC self consistent field [[https://arxiv.org/pdf/2303.02436.pdf][TS-SCF]] is an iterative method that allows to get 
+  canonical biorthogonal left $\{\chi_i\}$ and right $\{\phi_i\}$ orbitals,
+  \[
+  \left\langle \chi_i | \phi_j \right\rangle = \delta_{ij}
+  \]
+  that staionarize the TC energy at the one-determinantal level. These orbitals
+  satisfies the Brillouin theorm for the TC Hamiltonian.
+
+  In order to show how to run a TC-SCF calculation, we consider again the exemple
+  of the dinitrogen with the cc-pVDZ basis set, at a distance of 2.118 atomic units. 
+  We start by creating an EZFIO database and running a standard HF calculation that 
+  will be used as a start point for the TC-SCF:
+  
+  #+begin_src bash
+  # we create an EZFIO database called n2_tc
+  # don't forget to create the z-matrix file n2.zmt
+  qp create_ezfio --au -b cc-pvdz n2.zmt -o n2_tc
+  # we run a HF calculation
+  qp run scf | tee n2_tc.scf.out
+  #+end_src
+  
+  The last step before performing the TC-SCF calculation is to fix the parameters
+  of the Jastrow.
+
+  #+begin_src bash
+  # many Jastrow factor are under developpement in QP. 
+  # we need ti choose the form showed above by setting
+  qp set tc_keywords j1b_type 3
+  # we fix the parameter mu to 0.87
+  qp set ao_two_e_erf_ints mu_erf 0.87
+  # The last parameter is the nuclear parameter alpha 
+  # for the nitrogen in cc-pVDZ, the optimal alpha is 1.4
+  qp set tc_keywords j1b_pen "[1.4, 1.4]"
+  #+end_src
+
+  Since the TC integrals may take some computing time, once
+  they are calculated, we store them in the EXFIO database.
+  this can be done easly by 
+
+  #+begin_src bash
+  qp set tc_keywords io_tc_integ Write
+  #+end_src
+  
+
+
+
+* TC CIPSI

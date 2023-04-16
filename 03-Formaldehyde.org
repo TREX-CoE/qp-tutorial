@@ -2,7 +2,7 @@
 #+AUTHOR: Anthony Scemama
 #+LANGUAGE:  en
 #+HTML_LINK_UP: 02-N2.html
-#+HTML_LINK_HOME: index.html
+#+HTML_LINK_HOME: 04-tc.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 #+PROPERTY: header-args :exports code :eval no
 
@@ -424,7 +424,7 @@ Summary at N_det =       102890
 # ============ ============================= ============================= =============================
   #+end_example
   
-  and the extrapolated energy are:
+  and the extrapolated energies are:
 
   #+begin_example
  State            1
@@ -465,7 +465,7 @@ Summary at N_det =       102890
 
   #+end_example
   
-  Leaving the calculation run much longer, one should obtain 3.99 eV
-  for the 1st state, and 7.11 eV for the 2nd state.
+  Leaving the calculation run much longer by considering a larger ~n_det_max~, 
+  one should obtain 3.99 eV for the 1st state, and 7.11 eV for the 2nd state.
   
   
