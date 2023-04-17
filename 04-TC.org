@@ -56,7 +56,6 @@ of the Transcorrelated (TC) theory.
 
   First go to the repository of QP and then switch to the branch of 
   TC development
-
   #+begin_src bash
 cd qp2
 git checkout -b dev-stable-tc-scf
@@ -74,18 +73,15 @@ ninja
   #+end_src
 
   #+begin_important
-
   Make sure that you have sourced before compiling
-
   #+begin_src bash
 source quantum_package.rc
   #+end_src
-
   #+end_important
   
   Now you can start running TC calculation! ;)
   
-
+  
 * TC self consistent field
 
   In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
@@ -105,7 +101,6 @@ source quantum_package.rc
   We start by creating an EZFIO database and running a standard HF calculation that 
   will be used as a start point for the TC-SCF.
   Don't forget to create the z-matrix file ~n2.zmt~ before creating the EZFIO.
-  
   #+begin_src bash
 qp create_ezfio --au -b cc-pvdz n2.zmt -o n2_tc
 qp run scf | tee n2_tc.scf.out
@@ -115,14 +110,12 @@ qp run scf | tee n2_tc.scf.out
   of the Jastrow. 
   Many Jastrow factor are under development in QP. The form discussed above
   corresponds to the keyword ~j1b_type=3~
-
   #+begin_src bash
 qp set tc_keywords j1b_type 3
   #+end_src
 
   Concerning the parameter $\mu$ of the Jastrow, it is
   recommanded to use always $\mu=0.87$.
-
   #+begin_src bash
 qp set ao_two_e_erf_ints mu_erf 0.87
   #+end_src
@@ -131,35 +124,29 @@ qp set ao_two_e_erf_ints mu_erf 0.87
   each atom and the optimal value depends on the basis sets.
   For the Nitrogen atom in cc-pVDZ, the optimal correlation parameter
   is $\alpha=1.4$.
-
   #+begin_src bash
 qp set tc_keywords j1b_pen "[1.4, 1.4]"
   #+end_src
 
   #+begin_note
-
   Since TC integrals can be expensive to calculate, once they 
   are calculated, we store them in the EXFIO database.
   This allows them to be read directly in a future calculation
   (like in the next TC-CIPSI calculation). This can be done
   with,
-
   #+begin_src bash
 qp set tc_keywords io_tc_integ Write
   #+end_src
-
   #+end_note
   
   We can now run the ~tc-scf~ code and save the output in a file
   ~n2_tc.tc_scf.out~ by doing
-
   #+begin_src bash
 qp run tc_scf |tee n2_tc.tc_scf.out
   #+end_src
   
   To check the obtained energy by searching ~TC energy =~ in the
   output file, or by the command
-
   #+begin_src bash
 qp get tc_scf bitc_energy
   #+end_src
@@ -171,7 +158,7 @@ qp get tc_scf bitc_energy
   This is why we get an improvement with respect to the HF
   energy by $\approx 52$ mH.
   
-
+  
 * TC CIPSI
 
   In the previous sections, we observed that CIPSI is highly 
@@ -183,7 +170,6 @@ qp get tc_scf bitc_energy
   between the two methods. To ensure a fair comparison, we will 
   freeze the core orbitals and maintain the same number of of 
   ~n_det_max~ as before:
-
   #+begin_src bash
 qp set_frozen_core
 qp set determinants n_det_max 50000
@@ -191,7 +177,6 @@ qp set determinants n_det_max 50000
   
   We proceed now to the TC-CIPSI calculation via the ~fci_tc_bi_ortho~
   code and we save the output to the file =n2_tc.tcfci.out=:
-
   #+begin_src bash
 qp run fci_tc_bi_ortho |tee n2_tc.tcfci.out
   #+end_src
@@ -200,7 +185,6 @@ qp run fci_tc_bi_ortho |tee n2_tc.tcfci.out
   To extract the relevant data and visualize the convergence of the 
   TC energy in function of the number of determinants, we can 
   simply use the ~grep~ command:
-
   #+begin_src bash
 grep "Ndet,E,E+PT2,E+RPT2,|PT2|=" n2_tc.tcfci.out | cut -d "=" -f 2 > data_tc
   #+end_src
@@ -225,7 +209,6 @@ grep "Ndet,E,E+PT2,E+RPT2,|PT2|=" n2_tc.tcfci.out | cut -d "=" -f 2 > data_tc
   \]
   gives an estimation of $E_{\text{TC-FCI}} \approx -109.3197$ atomic units which is 
   very close to the TC-FCI energy.
-  
    #+begin_src gnuplot
 #!/usr/bin/gnuplot
 set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
@@ -261,7 +244,6 @@ exit
   We turn now to the comparison between the CIPSI and the TC-CIPSI
   energies. The following gnuplot script allows to visualize the convergence
   of both, in term of the number of determinants.
-
    #+begin_src gnuplot
 #!/usr/bin/gnuplot
 set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
