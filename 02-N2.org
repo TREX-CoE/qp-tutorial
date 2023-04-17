@@ -8,9 +8,8 @@
 
 In this part of the tutorial, you will learn how to perform
 frozen-core Full Configuration Interaction (FCI) calculations using
-the Configuration Interaction by Perturbation of the
-Single-determinant (CIPSI) algorithm in Quantum Package (QP) for the
-ground state of molecules. We will use the dinitrogen molecule near the
+the Configuration Interaction using a Perturbative Selection made Iteratively (CIPSI) algorithm in Quantum Package (QP) for the
+ground state of molecules. We will use the nitrogen molecule near the
 equilibrium bond length, with the cc-pVDZ basis set.
 
 * Preparing the EZFIO
@@ -139,7 +138,7 @@ plot "data"  using 1:2 with linespoints title "E", \
 
    The plot indicates that the variational energy converges to the FCI
    limit. The PT2-corrected energy is a better estimate of the FCI
-   energy, but it may overestimate its value.
+   energy, but it may overestimate its magnitude.
   
 ** Extrapolated FCI energy
     
