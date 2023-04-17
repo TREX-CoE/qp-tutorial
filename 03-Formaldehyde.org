@@ -8,8 +8,8 @@
 
 
 In this part of the tutorial, you will learn how to perform
-excited state calculations using the Configuration Interaction by
-Perturbation of the Single-determinant (CIPSI) algorithm in Quantum
+excited state calculations using the Configuration Interaction 
+using a Perturbative Selection made Iteratively (CIPSI) algorithm in Quantum
 Package (QP). As an illustration, we will compute the energies of the
 two lowest excited states of the formaldehyde molecule in the aug-cc-pVDZ
 basis set.
@@ -19,7 +19,7 @@ basis set.
 The following table displays, in eV, the theoretical best estimates (TBE) of the
 excitation energies of formaldehyde.
 $V$ denotes valence states, and $R$ denotes Rydberg states.
-The data are taken from https://pubs.acs.org/doi/10.1021/acs.jctc.8b00406 .
+The data are taken from https://arxiv.org/abs/1807.02045 .
 
 | Transition                                                                                                                | TBE (eV) |
 |---------------------------------------------------------------------------------------------------------------------------+----------|
@@ -116,8 +116,8 @@ Summary at N_det =        51242
 # ============ ============================= ============================= =============================
   #+end_example
 
-  In this calculation, the PT2-corrected excitation energies are 
-  8.6 and 10.2 eV. This result is far from the expected values of 3.97
+  In this calculation, the PT2-corrected excitation energies are around
+  8.5 and 10.1 eV. This result is far from the expected values of 3.97
   and 7.3 eV.
 
   Let us look at the wave functions with ~qp edit~ to understand what
