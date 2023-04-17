@@ -14,6 +14,7 @@
     1. [[./01-Intro.org][Getting started]]
     2. [[./02-N2.org][Frozen-Core FCI Calculations using CIPSI]]
     3. [[./03-Formaldehyde.org][Excited-state calculations]]
+    4. [[./04-TC.org][Transcorrelated calculations]]
 
 #+begin_note
     This web site is available here:

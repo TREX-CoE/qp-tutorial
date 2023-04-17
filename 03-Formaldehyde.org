@@ -2,7 +2,7 @@
 #+AUTHOR: Anthony Scemama
 #+LANGUAGE:  en
 #+HTML_LINK_UP: 02-N2.html
-#+HTML_LINK_HOME: 04-tc.html
+#+HTML_LINK_HOME: 04-TC.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 #+PROPERTY: header-args :exports code :eval no
 

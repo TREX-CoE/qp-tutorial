@@ -7,7 +7,7 @@
 #+PROPERTY: header-args :exports code :eval no
 
 Congratulations! By reaching this point in the tutorial, you've made 
-fantastic progress and are one step closer to mastering the code. In
+fantastic progress and are one step closer to mastering the QP code. In
 this part of the tutorial you will learn how you can easly run a 
 calculation with an explicitly correlated wavefunctions in the framework
 of the Transcorrelated (TC) theory.
@@ -34,7 +34,7 @@ of the Transcorrelated (TC) theory.
   u(r_{12}) = \frac{r_{12} \,  \left[ 1 - \text{erf} \left( \mu r_{12} \right)  \right]}{2}
     - \frac{\exp \left[ -\left( \mu r_{12} \right)^2 \right] }{2 \sqrt{\pi} \mu}
   \]
-  and $v$ is an envelope that has been addded to cancel out the correlation
+  and $v$ is an envelope that has been added to cancel out the correlation
   when electrons are closed to nuclei,
   \[
   v(\mathbf{r}) = \Pi_A \left[ 1 - 
@@ -44,7 +44,7 @@ of the Transcorrelated (TC) theory.
   The parameter $\mu$ controls both the depth of the coulomb hole and the typical 
   range of the correlation factor in $r_{12}$. In practice, $\mu=0.87$ is optimal
   to correlate valence electron and therefore only the parameter $\alpha$ need to 
-  be optmized. This parameter depends on the atom as wwll as the choice of the 
+  be optimized. This parameter depends on the atom as well as the choice of the 
   basis set. In this tutorial, the optimal value of $\alpha$ will be given.
   
 
@@ -52,30 +52,30 @@ of the Transcorrelated (TC) theory.
 
 * Installation
 
-  Since the TC algorithms are developped very recently, you need to 
-  switch from ~master~ to ~dev-stable-tc-scf~. This can be done easely
+  Since the TC algorithms are developed very recently, you need to 
+  switch from ~master~ to ~dev-stable-tc-scf~. This can be done easily
   by few steps.
   #+begin_src bash
-  # First go to the repository of QP
-  cd qp2
-  # switch to the branch of TC developpement
-  git checkout -b dev-stable-tc-scf
-  # pull the TC codes to your repository
-  git pull origin dev-stable-tc-scf
-  # now compile the code by doing
-  ninja clean
-  ninja
+# First go to the repository of QP
+cd qp2
+# switch to the branch of TC development
+git checkout -b dev-stable-tc-scf
+# pull the TC codes to your repository
+git pull origin dev-stable-tc-scf
+# now compile the code by doing
+ninja clean
+ninja
   #+end_src
 
-  Make sur that you have sourced before compiling
+  Make sure that you have sourced before compiling
   #+begin_src bash
-  source quantum_package.rc
+source quantum_package.rc
   #+end_src
   
   Now you can start running TC calculation! ;)
   
 
-* TC self consisten field
+* TC self consistent field
 
   In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
   provide a good start point. Although we can use the HF orbitals in the TC
@@ -86,45 +86,241 @@ of the Transcorrelated (TC) theory.
   \[
   \left\langle \chi_i | \phi_j \right\rangle = \delta_{ij}
   \]
-  that staionarize the TC energy at the one-determinantal level. These orbitals
-  satisfies the Brillouin theorm for the TC Hamiltonian.
+  that make the TC energy stationary at the one-determinantal level. These orbitals
+  satisfies the Brillouin theorem for the TC Hamiltonian.
 
-  In order to show how to run a TC-SCF calculation, we consider again the exemple
+  In order to show how to run a TC-SCF calculation, we consider again the example
   of the dinitrogen with the cc-pVDZ basis set, at a distance of 2.118 atomic units. 
   We start by creating an EZFIO database and running a standard HF calculation that 
-  will be used as a start point for the TC-SCF:
+  will be used as a start point for the TC-SCF.
+  Don't forget to create the z-matrix file n2.zmt before creating the EZFIO.
   
   #+begin_src bash
-  # we create an EZFIO database called n2_tc
-  # don't forget to create the z-matrix file n2.zmt
-  qp create_ezfio --au -b cc-pvdz n2.zmt -o n2_tc
-  # we run a HF calculation
-  qp run scf | tee n2_tc.scf.out
+qp create_ezfio --au -b cc-pvdz n2.zmt -o n2_tc
+qp run scf | tee n2_tc.scf.out
   #+end_src
   
-  The last step before performing the TC-SCF calculation is to fix the parameters
-  of the Jastrow.
-
+  Before performing the TC-SCF calculation we need to fix the parameters
+  of the Jastrow. 
+  Many Jastrow factor are under development in QP. The form discussed above
+  corresponds to the keyword ~j1b_type=3~
   #+begin_src bash
-  # many Jastrow factor are under developpement in QP. 
-  # we need ti choose the form showed above by setting
-  qp set tc_keywords j1b_type 3
-  # we fix the parameter mu to 0.87
-  qp set ao_two_e_erf_ints mu_erf 0.87
-  # The last parameter is the nuclear parameter alpha 
-  # for the nitrogen in cc-pVDZ, the optimal alpha is 1.4
-  qp set tc_keywords j1b_pen "[1.4, 1.4]"
+qp set tc_keywords j1b_type 3
   #+end_src
 
-  Since the TC integrals may take some computing time, once
-  they are calculated, we store them in the EXFIO database.
-  this can be done easly by 
+  Concerning the parameter $\mu$ of the Jastrow, it is
+  recommanded to use always $\mu=0.87$.
 
   #+begin_src bash
-  qp set tc_keywords io_tc_integ Write
+qp set ao_two_e_erf_ints mu_erf 0.87
+  #+end_src
+
+  The parameter $\alpha$ need to be optimized in general for 
+  each atom and the optimal value depends on the basis sets.
+  For the Nitrogen atom in cc-pVDZ, the optimal correlation parameter
+  id $\alpha=1.4$.
+
+  #+begin_src bash
+qp set tc_keywords j1b_pen "[1.4, 1.4]"
+  #+end_src
+
+  #+begin_note
+
+  Since TC integrals can be expensive to calculate, once they 
+  are calculated, we store them in the EXFIO database.
+  This allows them to be read directly in a future calculation
+  (like in the next TC-CIPSI calculation). This can be done
+  with,
+
+  #+begin_src bash
+qp set tc_keywords io_tc_integ Write
+  #+end_src
+
+  #+end_note
+  
+  We can now run the ~tc-scf~ code and save the output in a file
+  ~n2_tc.tc_scf.out~ by doing
+
+  #+begin_src bash
+qp run tc_scf |tee n2_tc.tc_scf.out
   #+end_src
   
+  To check the obtained energy by searching ~TC energy =~ in the
+  output file, or by the command
 
+  #+begin_src bash
+qp get tc_scf bitc_energy
+  #+end_src
 
+  The expected TC-SCF energy is -109.001278 atomic units.
+  In contrast to the HF energy which, by definition, does not 
+  include electronic correlation, the TC-SCF energy includes 
+  correlation although only one determinant is used.
+  This is why we get an improvement with respect to the HF
+  energy by $\approx 52$ mH.
+  
 
 * TC CIPSI
+
+  We saw in the previous sections that CIPSI is very efficient to 
+  approximate the FCI energy. 
+  Similarly, we will see here that TC-CIPSI provides near TC-FCI 
+  accuracy.
+  We will compare also between CIPSI and TC-CIPSI results. In order 
+  to make the comparison fair, we shall freeze the core orbitals and 
+  consider the same number of ~n_det_max~ as before:
+
+  #+begin_src bash
+qp set_frozen_core
+qp set determinants n_det_max 50000
+  #+end_src
+  
+  We proceed now to the TC-CIPSI calculation via the ~fci_tc_bi_ortho~
+  code and we save the output to the file =n2_tc.tcfci.out=:
+
+  #+begin_src bash
+qp run fci_tc_bi_ortho |tee n2_tc.tcfci.out
+  #+end_src
+  
+  The output file contains a lot of information.
+  To extract the relevant data and visualize the convergence of the 
+  TC energy in function of the number of determinants, we can 
+  simply use the ~grep~ command:
+
+  #+begin_src bash
+grep "Ndet,E,E+PT2,E+RPT2,|PT2|=" n2_tc.tcfci.out | cut -d "=" -f 2 > data_tc
+  #+end_src
+
+  ~data_tc~ contains 5 columns 
+
+  These columns refer to the number of selected determinants 
+  ~N_det~, the TC energy in the basis of selected determinants $E_{TC}^{0}$,
+  the estimation of the TC-FCI energy with the TC-PT2 correction 
+  $E_{TC}^{0}+E_{TC}^{2}$ and with renormalized correction TC-rPT2 
+  $E_{TC}^{0}+rE_{TC}^{2}$, and finally the negative part of the TC-PT2 correction.
+  Note that in the standard case the PT2 is always negative while the TC-PT2
+  may be positive or negative depending on the chosen Jastrow factor.
+  
+** Convergence of TC-CIPSI
+   
+  First we want to compare between the obtained TC-CIPSI energy and the 
+  TC-FCI energy $E_{\text{TC-FCI}}=-109.3199$ atomic units.
+
+  The extrapolattion of the TC-CIPSI energy
+  \[
+  E_{\text{TC-CIPSI}}^{0}(E_{\text{TC-CIPSI}}^{2}) \approx a * (E_{\text{TC-CIPSI}}^{2}) + E_{\text{TC-FCI}}
+  \]
+  gives an estimation of $E_{\text{TC-FCI}} \approx -109.3197$ atomic units which is 
+  very close to the TC-FCI energy.
+  
+   #+begin_src gnuplot
+#!/usr/bin/gnuplot
+set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
+set output "extrap_Etc.pdf"
+
+set grid
+
+set format x "%.2f"
+set xrange [-0.10:0]
+set xlabel "Second-order TC energy (a.u.)"
+
+set yrange[-109.325:*]
+set ylabel "Zero-order TC energy (a.u.)"
+set format y "%.2f"
+
+E_TCCIPSI(E_TCPT2) = a * E_TCPT2 + E_TCFCI
+fit [-0.05:0.] E_TCCIPSI(x) "data_tc" using ($4-$2):2 via a, E_TCFCI
+print E_TCFCI
+
+plot "data_tc" u ($4-$2):2 t "TC-CIPSI" w lp lt 2 dt 2 lw 2.0 lc 0 pt 2 ps 0.7 \
+  , E_TCCIPSI(x)           t "Fit"      w l  lt 4 dt 4 lw 2.0 lc 1             \
+  , -109.3199              t "TC-FCI"   w l  lt 1 dt 1 lc 0 lw 2.0             \
+
+set encoding iso_8859_1
+exit
+   #+end_src
+
+  [[./images/extrap_Etc.pdf]]
+
+
+** CIPSI vs TC-CIPSI
+
+  Using gnuplot with the files ~data~ (obtained in the previous calculation 
+  of CIPSI with HF orbitals) and ~data_tc~ together with the following commands
+
+   #+begin_src gnuplot
+set grid
+set xlabel "N_{det}"
+set ylabel "Energy"
+set log x
+plot "data"    using 1:2       with linespoints title "E"      \
+   , "data"    using 1:($2+$3) with linespoints title "E+PT2"  \
+   , "data_tc" using 1:2       with linespoints title "E_{TC}" \
+   , "data_tc" using 1:3       with linespoints title "E_{TC}+PT2"
+   #+end_src
+
+  we can compare the convergence of CIPSI and TC-CIPSI.
+
+  The plot indicates that 
+
+  To plot the variational energy as a function of the renormalized
+  PT2 correction, use the following Gnuplot commands:
+
+  #+begin_src gnuplot
+set grid
+set xlabel "E_{PT2}"
+set ylabel "Energy"
+unset log x
+set xrange [:0.]
+plot "data"    using 5:2       with linespoints title "E^{(0)}" \
+   , "data_tc" using ($3-$2):2 with linespoints title "E_TC^{(0)}" 
+  #+end_src
+
+  As in the case of CIPSI, the TC-FCI energy can be estimated by 
+  making a linear fit.
+
+
+
+
+  
+  We turn now to the comparison between the CIPSI and the TC-CIPSI
+  energies. The following gnuplot script allows to visualize the convergence
+  of both, in term of the number of determinants.
+
+   #+begin_src gnuplot
+#!/usr/bin/gnuplot
+set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
+set output "conv_Etc.pdf"
+
+set grid
+#set key top right                                                                                                         
+
+set xrange [10:100000]
+set logscale x
+set xlabel "Number of determinants"
+set format x "10^{%L}"
+
+set yrange [-109.34:-109.20]
+set ylabel "Energy (a.u.)"
+set format y "%.2f"
+
+set key top left
+
+plot "data"    u 1:2        t "E^{(0)}"                   w lp lt 3 dt 3 lc 7 lw 3.0 pt 6 ps 0.7 \
+   , "data"    u 1:($2+$3)  t "E^{(0)}+E^{(2)}"           w lp lt 2 dt 2 lc 7 lw 2.0 pt 4 ps 0.7 \
+   , -109.278339            t "FCI"                       w l  lt 1 dt 1 lc 7 lw 2.0             \
+   , "data_tc" u 1:2        t "E_{TC}^{(0)}"              w lp lt 3 dt 3 lc 0 lw 3.0 pt 6 ps 0.7 \
+   , "data_tc" u 1:3        t "E_{TC}^{(0)}+E_{TC}^{(2)}" w lp lt 2 dt 2 lc 0 lw 2.0 pt 4 ps 0.7 \
+   , -109.3199              t "TC-FCI"                    w l  lt 1 dt 1 lc 0 lw 2.0             \
+
+set encoding iso_8859_1
+exit
+   #+end_src
+
+  [[./images/conv_Etc.pdf]]
+  
+  We observe that both $E_{\text{CISPI}}$ and $E_{\text{TC-CISPI}}$ converge to the 
+  $E_{\text{FCI}}$ and $E_{\text{TC-FCI}}$ limits, respectively.
+  However, the TC energy provide an improvement over the standard FCI energy by 
+  $\approx 41$ mH.
+  
