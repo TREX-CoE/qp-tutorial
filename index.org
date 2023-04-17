@@ -1,5 +1,5 @@
 #+TITLE: Quantum Package tutorial
-#+AUTHOR: Abdallah Ammar, Emmanuel Giner, Pierre-François Loos, Anthony Scemama
+#+AUTHOR: A. Ammar, E. Giner, P.-F. Loos, A. Scemama
 #+LANGUAGE:  en
 #+HTML_LINK_HOME: 01-Intro.html
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
