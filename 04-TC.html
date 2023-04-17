@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-04-17 Mon 10:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Transcorrelated calculations</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Abdallah Ammar and Emmanuel Giner" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script type="text/javascript" src="org-html-themes/src/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="03-Formaldehyde.html"> PREV </a>
+ |
+ <a accesskey="H" href="index.html"> NEXT </a>
+</div><div id="content">
+<h1 class="title">Transcorrelated calculations</h1>
+<div id="table-of-contents">
+<a href="index.html"><h2>HOME</h2></a>
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgc88f9e9">1. CI vs CI-Jastrow wavefunction</a></li>
+<li><a href="#orgf276008">2. Installation</a></li>
+<li><a href="#org939735f">3. TC self consistent field</a></li>
+<li><a href="#orgecb8c87">4. TC CIPSI</a>
+<ul>
+<li><a href="#orgf578861">4.1. Convergence of TC-CIPSI</a></li>
+<li><a href="#org6bab77b">4.2. CIPSI vs TC-CIPSI</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Congratulations! By reaching this point in the tutorial, you've made 
+fantastic progress and are one step closer to mastering the QP code. In
+this part of the tutorial you will learn how you can easly run a 
+calculation with an explicitly correlated wavefunctions in the framework
+of the Transcorrelated (TC) theory.
+</p>
+
+<div id="outline-container-orgc88f9e9" class="outline-2">
+<h2 id="orgc88f9e9"><span class="section-number-2">1</span> CI vs CI-Jastrow wavefunction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+In the precious sections, all the ground and the excited states 
+calculations were made with a CI wavefunction,
+\[
+  \Psi = \sum_I c_I D_I
+  \]
+where \(D_I\) are the Slater determinants. In this section, we will
+go one step further to include dynamical correlation via a Jastrow
+factor,
+\[
+  \Psi = \sum_I c_I D_I e^{\tau}.
+  \]
+<a href="https://doi.org/10.1063/5.0044683">The Jastrow</a> factor implemented in the QP has the following expression,
+\[
+  \tau = \sum_{i,j} u(r_{ij}) v(r_i) v(r_j),
+  \]
+where the 2-electron function is inspired by range-separated DFT,
+\[
+u(r<sub>12</sub>) = \frac{r<sub>12</sub> \,  \left[ 1 - \text{erf} \left( &mu; r<sub>12</sub> \right)  \right]}{2}
+</p>
+<ul class="org-ul">
+<li>\frac{exp \left[ -\left( &mu; r<sub>12</sub> \right)<sup>2</sup> \right] }{2 \sqrt{\pi} &mu;}</li>
+</ul>
+<p>
+\]
+and \(v\) is an envelope that has been added to cancel out the correlation
+when electrons are closed to nuclei,
+\[
+  v(\mathbf{r}) = \Pi_A \left[ 1 - 
+    \exp \left( -\alpha_A \left( \mathbf{r} - \mathbf{R_A} \right)^2 \right) \right],
+  \]
+where the index \(A\) runs over the nuclei.
+The parameter \(\mu\) controls both the depth of the coulomb hole and the typical 
+range of the correlation factor in \(r_{12}\). In practice, \(\mu=0.87\) is optimal
+to correlate valence electron and therefore only the parameter \(\alpha\) need to 
+be optimized. This parameter depends on the atom as well as the choice of the 
+basis set. In this tutorial, the optimal value of \(\alpha\) will be given.
+</p>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orgf276008" class="outline-2">
+<h2 id="orgf276008"><span class="section-number-2">2</span> Installation</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Since the TC algorithms are developed very recently, you need to 
+switch from <code>master</code> to <code>dev-stable-tc-scf</code>. This can be done easily
+by few steps.
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"># <span style="color: #b22222;">First go to the repository of QP</span>
+<span style="color: #483d8b;">cd</span> qp2
+# <span style="color: #b22222;">switch to the branch of TC development</span>
+git checkout -b dev-stable-tc-scf
+# <span style="color: #b22222;">pull the TC codes to your repository</span>
+git pull origin dev-stable-tc-scf
+# <span style="color: #b22222;">now compile the code by doing</span>
+ninja clean
+ninja
+</pre>
+</div>
+
+<p>
+Make sure that you have sourced before compiling
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">source quantum_package.rc
+</pre>
+</div>
+
+<p>
+Now you can start running TC calculation! ;)
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org939735f" class="outline-2">
+<h2 id="org939735f"><span class="section-number-2">3</span> TC self consistent field</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
+provide a good start point. Although we can use the HF orbitals in the TC
+calculations, it is better to start from optimized orbitals to accelerate
+the convergence in term of the number of determinants.
+The TC self consistent field <a href="https://arxiv.org/pdf/2303.02436.pdf">TS-SCF</a> is an iterative method that allows to get 
+canonical biorthogonal left \(\{\chi_i\}\) and right \(\{\phi_i\}\) orbitals,
+\[
+  \left\langle \chi_i | \phi_j \right\rangle = \delta_{ij}
+  \]
+that make the TC energy stationary at the one-determinantal level. These orbitals
+satisfies the Brillouin theorem for the TC Hamiltonian.
+</p>
+
+<p>
+In order to show how to run a TC-SCF calculation, we consider again the example
+of the dinitrogen with the cc-pVDZ basis set, at a distance of 2.118 atomic units. 
+We start by creating an EZFIO database and running a standard HF calculation that 
+will be used as a start point for the TC-SCF.
+Don't forget to create the z-matrix file n2.zmt before creating the EZFIO.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp create_ezfio --au -b cc-pvdz n2.zmt -o n2_tc
+qp run scf | tee n2_tc.scf.out
+</pre>
+</div>
+
+<p>
+Before performing the TC-SCF calculation we need to fix the parameters
+of the Jastrow. 
+Many Jastrow factor are under development in QP. The form discussed above
+corresponds to the keyword <code>j1b_type=3</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">qp set tc_keywords j1b_type 3
+</pre>
+</div>
+
+<p>
+Concerning the parameter \(\mu\) of the Jastrow, it is
+recommanded to use always \(\mu=0.87\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set ao_two_e_erf_ints mu_erf 0.87
+</pre>
+</div>
+
+<p>
+The parameter \(\alpha\) need to be optimized in general for 
+each atom and the optimal value depends on the basis sets.
+For the Nitrogen atom in cc-pVDZ, the optimal correlation parameter
+id \(\alpha=1.4\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set tc_keywords j1b_pen <span style="color: #8b2252;">"[1.4, 1.4]"</span>
+</pre>
+</div>
+
+<div class="note">
+<p>
+
+</p>
+
+<p>
+Since TC integrals can be expensive to calculate, once they 
+are calculated, we store them in the EXFIO database.
+This allows them to be read directly in a future calculation
+(like in the next TC-CIPSI calculation). This can be done
+with,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set tc_keywords io_tc_integ Write
+</pre>
+</div>
+
+</div>
+
+<p>
+We can now run the <code>tc-scf</code> code and save the output in a file
+<code>n2_tc.tc_scf.out</code> by doing
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run tc_scf |tee n2_tc.tc_scf.out
+</pre>
+</div>
+
+<p>
+To check the obtained energy by searching <code>TC energy =</code> in the
+output file, or by the command
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp get tc_scf bitc_energy
+</pre>
+</div>
+
+<p>
+The expected TC-SCF energy is -109.001278 atomic units.
+In contrast to the HF energy which, by definition, does not 
+include electronic correlation, the TC-SCF energy includes 
+correlation although only one determinant is used.
+This is why we get an improvement with respect to the HF
+energy by \(\approx 52\) mH.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgecb8c87" class="outline-2">
+<h2 id="orgecb8c87"><span class="section-number-2">4</span> TC CIPSI</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+We saw in the previous sections that CIPSI is very efficient to 
+approximate the FCI energy. 
+Similarly, we will see here that TC-CIPSI provides near TC-FCI 
+accuracy.
+We will compare also between CIPSI and TC-CIPSI results. In order 
+to make the comparison fair, we shall freeze the core orbitals and 
+consider the same number of <code>n_det_max</code> as before:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp set_frozen_core
+qp set determinants n_det_max 50000
+</pre>
+</div>
+
+<p>
+We proceed now to the TC-CIPSI calculation via the <code>fci_tc_bi_ortho</code>
+code and we save the output to the file <code>n2_tc.tcfci.out</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">qp run fci_tc_bi_ortho |tee n2_tc.tcfci.out
+</pre>
+</div>
+
+<p>
+The output file contains a lot of information.
+To extract the relevant data and visualize the convergence of the 
+TC energy in function of the number of determinants, we can 
+simply use the <code>grep</code> command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">grep <span style="color: #8b2252;">"Ndet,E,E+PT2,E+RPT2,|PT2|="</span> n2_tc.tcfci.out | cut -d <span style="color: #8b2252;">"="</span> -f 2 &gt; data_tc
+</pre>
+</div>
+
+<p>
+<code>data_tc</code> contains 5 columns 
+</p>
+
+<p>
+These columns refer to the number of selected determinants 
+<code>N_det</code>, the TC energy in the basis of selected determinants \(E_{TC}^{0}\),
+the estimation of the TC-FCI energy with the TC-PT2 correction 
+\(E_{TC}^{0}+E_{TC}^{2}\) and with renormalized correction TC-rPT2 
+\(E_{TC}^{0}+rE_{TC}^{2}\), and finally the negative part of the TC-PT2 correction.
+Note that in the standard case the PT2 is always negative while the TC-PT2
+may be positive or negative depending on the chosen Jastrow factor.
+</p>
+</div>
+
+<div id="outline-container-orgf578861" class="outline-3">
+<h3 id="orgf578861"><span class="section-number-3">4.1</span> Convergence of TC-CIPSI</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+First we want to compare between the obtained TC-CIPSI energy and the 
+TC-FCI energy \(E_{\text{TC-FCI}}=-109.3199\) atomic units.
+</p>
+
+<p>
+The extrapolattion of the TC-CIPSI energy
+\[
+  E_{\text{TC-CIPSI}}^{0}(E_{\text{TC-CIPSI}}^{2}) \approx a * (E_{\text{TC-CIPSI}}^{2}) + E_{\text{TC-FCI}}
+  \]
+gives an estimation of \(E_{\text{TC-FCI}} \approx -109.3197\) atomic units which is 
+very close to the TC-FCI energy.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-gnuplot">#!/usr/bin/gnuplot
+set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
+set output "extrap_Etc.pdf"
+
+set grid
+
+set format x "%.2f"
+set xrange [-0.10:0]
+set xlabel "Second-order TC energy (a.u.)"
+
+set yrange[-109.325:*]
+set ylabel "Zero-order TC energy (a.u.)"
+set format y "%.2f"
+
+E_TCCIPSI(E_TCPT2) = a * E_TCPT2 + E_TCFCI
+fit [-0.05:0.] E_TCCIPSI(x) "data_tc" using ($4-$2):2 via a, E_TCFCI
+print E_TCFCI
+
+plot "data_tc" u ($4-$2):2 t "TC-CIPSI" w lp lt 2 dt 2 lw 2.0 lc 0 pt 2 ps 0.7 \
+  , E_TCCIPSI(x)           t "Fit"      w l  lt 4 dt 4 lw 2.0 lc 1             \
+  , -109.3199              t "TC-FCI"   w l  lt 1 dt 1 lc 0 lw 2.0             \
+
+set encoding iso_8859_1
+exit
+</pre>
+</div>
+
+<p>
+<a href="./images/extrap_Etc.pdf">./images/extrap_Etc.pdf</a>
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org6bab77b" class="outline-3">
+<h3 id="org6bab77b"><span class="section-number-3">4.2</span> CIPSI vs TC-CIPSI</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Using gnuplot with the files <code>data</code> (obtained in the previous calculation 
+of CIPSI with HF orbitals) and <code>data_tc</code> together with the following commands
+</p>
+
+<div class="org-src-container">
+<pre class="src src-gnuplot">set grid
+set xlabel "N_{det}"
+set ylabel "Energy"
+set log x
+plot "data"    using 1:2       with linespoints title "E"      \
+   , "data"    using 1:($2+$3) with linespoints title "E+PT2"  \
+   , "data_tc" using 1:2       with linespoints title "E_{TC}" \
+   , "data_tc" using 1:3       with linespoints title "E_{TC}+PT2"
+</pre>
+</div>
+
+<p>
+we can compare the convergence of CIPSI and TC-CIPSI.
+</p>
+
+<p>
+The plot indicates that 
+</p>
+
+<p>
+To plot the variational energy as a function of the renormalized
+PT2 correction, use the following Gnuplot commands:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-gnuplot">set grid
+set xlabel "E_{PT2}"
+set ylabel "Energy"
+unset log x
+set xrange [:0.]
+plot "data"    using 5:2       with linespoints title "E^{(0)}" \
+   , "data_tc" using ($3-$2):2 with linespoints title "E_TC^{(0)}" 
+</pre>
+</div>
+
+<p>
+As in the case of CIPSI, the TC-FCI energy can be estimated by 
+making a linear fit.
+</p>
+
+
+
+
+
+<p>
+We turn now to the comparison between the CIPSI and the TC-CIPSI
+energies. The following gnuplot script allows to visualize the convergence
+of both, in term of the number of determinants.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-gnuplot">#!/usr/bin/gnuplot
+set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
+set output "conv_Etc.pdf"
+
+set grid
+#set key top right                                                                                                         
+
+set xrange [10:100000]
+set logscale x
+set xlabel "Number of determinants"
+set format x "10^{%L}"
+
+set yrange [-109.34:-109.20]
+set ylabel "Energy (a.u.)"
+set format y "%.2f"
+
+set key top left
+
+plot "data"    u 1:2        t "E^{(0)}"                   w lp lt 3 dt 3 lc 7 lw 3.0 pt 6 ps 0.7 \
+   , "data"    u 1:($2+$3)  t "E^{(0)}+E^{(2)}"           w lp lt 2 dt 2 lc 7 lw 2.0 pt 4 ps 0.7 \
+   , -109.278339            t "FCI"                       w l  lt 1 dt 1 lc 7 lw 2.0             \
+   , "data_tc" u 1:2        t "E_{TC}^{(0)}"              w lp lt 3 dt 3 lc 0 lw 3.0 pt 6 ps 0.7 \
+   , "data_tc" u 1:3        t "E_{TC}^{(0)}+E_{TC}^{(2)}" w lp lt 2 dt 2 lc 0 lw 2.0 pt 4 ps 0.7 \
+   , -109.3199              t "TC-FCI"                    w l  lt 1 dt 1 lc 0 lw 2.0             \
+
+set encoding iso_8859_1
+exit
+</pre>
+</div>
+
+<p>
+<a href="./images/conv_Etc.pdf">./images/conv_Etc.pdf</a>
+</p>
+
+<p>
+We observe that both \(E_{\text{CISPI}}\) and \(E_{\text{TC-CISPI}}\) converge to the 
+\(E_{\text{FCI}}\) and \(E_{\text{TC-FCI}}\) limits, respectively.
+However, the TC energy provide an improvement over the standard FCI energy by 
+\(\approx 41\) mH.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Abdallah Ammar and Emmanuel Giner</p>
+<p class="date">Created: 2023-04-17 Mon 10:45</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-13 Thu 17:50 -->
+<!-- 2023-04-17 Mon 10:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -272,7 +272,7 @@ for the JavaScript code in this tag.
 <div id="org-div-home-and-up">
  <a accesskey="h" href="02-N2.html"> PREV </a>
  |
- <a accesskey="H" href="index.html"> NEXT </a>
+ <a accesskey="H" href="04-TC.html"> NEXT </a>
 </div><div id="content">
 <h1 class="title">Frozen-Core FCI Calculations using CIPSI</h1>
 <div id="table-of-contents">
@@ -280,12 +280,12 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4a60c6d">1. Preparing the EZFIO</a></li>
-<li><a href="#org53c072b">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a>
+<li><a href="#org70b0091">1. Preparing the EZFIO</a></li>
+<li><a href="#org03ea633">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a>
 <ul>
-<li><a href="#orgce60710">2.1. Blind test</a></li>
-<li><a href="#org275ab6c">2.2. A correct run</a></li>
-<li><a href="#orgc952743">2.3. An improved run</a></li>
+<li><a href="#orge5b6b64">2.1. Blind test</a></li>
+<li><a href="#orge26a55b">2.2. A correct run</a></li>
+<li><a href="#orgc0d4ae9">2.3. An improved run</a></li>
 </ul>
 </li>
 </ul>
@@ -401,8 +401,8 @@ The data are taken from <a href="https://pubs.acs.org/doi/10.1021/acs.jctc.8b004
 </table>
 
 
-<div id="outline-container-org4a60c6d" class="outline-2">
-<h2 id="org4a60c6d"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div id="outline-container-org70b0091" class="outline-2">
+<h2 id="org70b0091"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, let's create an <code>xyz</code> file for formaldehyde, in Angstroms:
@@ -455,12 +455,12 @@ excited-state energies and inaccurate properties.
 </div>
 </div>
 
-<div id="outline-container-org53c072b" class="outline-2">
-<h2 id="org53c072b"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
+<div id="outline-container-org03ea633" class="outline-2">
+<h2 id="org03ea633"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgce60710" class="outline-3">
-<h3 id="orgce60710"><span class="section-number-3">2.1</span> Blind test</h3>
+<div id="outline-container-orge5b6b64" class="outline-3">
+<h3 id="orge5b6b64"><span class="section-number-3">2.1</span> Blind test</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 To enable the calculation of multiple states, you can use <code>qp
@@ -575,8 +575,8 @@ impossible to describe any of the \(A_2\), \(B_1\) and \(B_2\) states.
 </div>
 </div>
 
-<div id="outline-container-org275ab6c" class="outline-3">
-<h3 id="org275ab6c"><span class="section-number-3">2.2</span> A correct run</h3>
+<div id="outline-container-orge26a55b" class="outline-3">
+<h3 id="orge26a55b"><span class="section-number-3">2.2</span> A correct run</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 A simple solution is to start from a set of determinants containing
@@ -803,8 +803,8 @@ Extrapolated energies
 </div>
 </div>
 
-<div id="outline-container-orgc952743" class="outline-3">
-<h3 id="orgc952743"><span class="section-number-3">2.3</span> An improved run</h3>
+<div id="outline-container-orgc0d4ae9" class="outline-3">
+<h3 id="orgc0d4ae9"><span class="section-number-3">2.3</span> An improved run</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 To improve the results, we can take the state-average natural
@@ -860,7 +860,7 @@ Summary at N_det =       102890
 </pre>
 
 <p>
-and the extrapolated energy are:
+and the extrapolated energies are:
 </p>
 
 <pre class="example">
@@ -903,8 +903,8 @@ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)
 </pre>
 
 <p>
-Leaving the calculation run much longer, one should obtain 3.99 eV
-for the 1st state, and 7.11 eV for the 2nd state.
+Leaving the calculation run much longer by considering a larger <code>n_det_max</code>, 
+one should obtain 3.99 eV for the 1st state, and 7.11 eV for the 2nd state.
 </p>
 </div>
 </div>
@@ -912,7 +912,7 @@ for the 1st state, and 7.11 eV for the 2nd state.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Anthony Scemama</p>
-<p class="date">Created: 2023-04-13 Thu 17:50</p>
+<p class="date">Created: 2023-04-17 Mon 10:45</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
