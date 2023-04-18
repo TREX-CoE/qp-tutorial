@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-18 Tue 14:00 -->
+<!-- 2023-04-18 Tue 14:01 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Transcorrelated calculations</title>
@@ -280,13 +280,13 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org000a3ca">1. CI vs CI-Jastrow wavefunction</a></li>
-<li><a href="#orgf09dcc0">2. Installation</a></li>
-<li><a href="#orgdb8177d">3. TC self consistent field</a></li>
-<li><a href="#org4785383">4. TC CIPSI</a>
+<li><a href="#org7c662bc">1. CI vs CI-Jastrow wavefunction</a></li>
+<li><a href="#orgc9db6e8">2. Installation</a></li>
+<li><a href="#org4cc8f93">3. TC self consistent field</a></li>
+<li><a href="#org0687354">4. TC CIPSI</a>
 <ul>
-<li><a href="#org15c6c22">4.1. Convergence of TC-CIPSI</a></li>
-<li><a href="#org43de1c2">4.2. CIPSI vs TC-CIPSI</a></li>
+<li><a href="#orga8f8677">4.1. Convergence of TC-CIPSI</a></li>
+<li><a href="#orgf4fb3d1">4.2. CIPSI vs TC-CIPSI</a></li>
 </ul>
 </li>
 </ul>
@@ -300,8 +300,8 @@ calculation with an explicitly correlated wavefunction in the framework
 of the Transcorrelated (TC) theory.
 </p>
 
-<div id="outline-container-org000a3ca" class="outline-2">
-<h2 id="org000a3ca"><span class="section-number-2">1</span> CI vs CI-Jastrow wavefunction</h2>
+<div id="outline-container-org7c662bc" class="outline-2">
+<h2 id="org7c662bc"><span class="section-number-2">1</span> CI vs CI-Jastrow wavefunction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In the precious sections, all the ground and the excited states
@@ -341,8 +341,8 @@ basis set. In this tutorial, the optimal value of \(\alpha\) will be given.
 
 
 
-<div id="outline-container-orgf09dcc0" class="outline-2">
-<h2 id="orgf09dcc0"><span class="section-number-2">2</span> Installation</h2>
+<div id="outline-container-orgc9db6e8" class="outline-2">
+<h2 id="orgc9db6e8"><span class="section-number-2">2</span> Installation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Since the TC algorithms are developed very recently, you need to
@@ -372,7 +372,7 @@ Pull the TC codes to your repository by doing
 Now compile the code by doing
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">  ninja clean
+<pre class="src src-bash">ninja clean
 ninja
 </pre>
 </div>
@@ -395,8 +395,8 @@ Now you can start running TC calculation! ;)
 </div>
 
 
-<div id="outline-container-orgdb8177d" class="outline-2">
-<h2 id="orgdb8177d"><span class="section-number-2">3</span> TC self consistent field</h2>
+<div id="outline-container-org4cc8f93" class="outline-2">
+<h2 id="org4cc8f93"><span class="section-number-2">3</span> TC self consistent field</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
@@ -501,8 +501,8 @@ energy by \(\approx 52\) mH.
 </div>
 
 
-<div id="outline-container-org4785383" class="outline-2">
-<h2 id="org4785383"><span class="section-number-2">4</span> TC CIPSI</h2>
+<div id="outline-container-org0687354" class="outline-2">
+<h2 id="org0687354"><span class="section-number-2">4</span> TC CIPSI</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 In the previous sections, we observed that CIPSI is highly
@@ -553,8 +553,8 @@ may be positive or negative depending on the chosen Jastrow factor.
 </p>
 </div>
 
-<div id="outline-container-org15c6c22" class="outline-3">
-<h3 id="org15c6c22"><span class="section-number-3">4.1</span> Convergence of TC-CIPSI</h3>
+<div id="outline-container-orga8f8677" class="outline-3">
+<h3 id="orga8f8677"><span class="section-number-3">4.1</span> Convergence of TC-CIPSI</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 First we want to compare between the obtained TC-CIPSI energy and the
@@ -606,8 +606,8 @@ exit
 </div>
 
 
-<div id="outline-container-org43de1c2" class="outline-3">
-<h3 id="org43de1c2"><span class="section-number-3">4.2</span> CIPSI vs TC-CIPSI</h3>
+<div id="outline-container-orgf4fb3d1" class="outline-3">
+<h3 id="orgf4fb3d1"><span class="section-number-3">4.2</span> CIPSI vs TC-CIPSI</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 We turn now to the comparison between the CIPSI and the TC-CIPSI
@@ -664,7 +664,7 @@ However, the TC energy provide an improvement over the standard FCI energy by
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: A. Ammar, E. Giner, P.-F. Loos, A. Scemama</p>
-<p class="date">Created: 2023-04-18 Tue 14:00</p>
+<p class="date">Created: 2023-04-18 Tue 14:01</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
