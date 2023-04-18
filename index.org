@@ -7,7 +7,7 @@
 * Presentations
 
     - [[./Presentations/algorithms.pdf][Algorithms used in Quantum Package]]
-    - [[./Presentations/tc.pdf][Transcorrelated approach of CI methods]]
+    - [[./Presentations/tc.pdf][Transcorrelated approach for CI methods]]
 
 * Hands-on
 
