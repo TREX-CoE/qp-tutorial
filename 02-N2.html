@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-18 Tue 13:45 -->
+<!-- 2023-04-18 Tue 14:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -280,18 +280,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb5c8877">1. Preparing the EZFIO</a></li>
-<li><a href="#org9c4bb1b">2. Running a first frozen-Core CIPSI Calculation</a>
+<li><a href="#orgbe7f69a">1. Preparing the EZFIO</a></li>
+<li><a href="#orge42e969">2. Running a first frozen-Core CIPSI Calculation</a>
 <ul>
-<li><a href="#org3c1c45b">2.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org4a4dde5">2.2. Extrapolated FCI energy</a></li>
+<li><a href="#orgc81faf8">2.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#org1fe2139">2.2. Extrapolated FCI energy</a></li>
 </ul>
 </li>
-<li><a href="#orgab83800">3. Saving Natural Orbitals</a></li>
-<li><a href="#orgc66fbeb">4. Running a second frozen-Core CIPSI Calculation</a>
+<li><a href="#orgf09aa57">3. Saving Natural Orbitals</a></li>
+<li><a href="#org9365145">4. Running a second frozen-Core CIPSI Calculation</a>
 <ul>
-<li><a href="#orgcbfeee8">4.1. Variational energy and PT2 contribution</a></li>
-<li><a href="#org8590728">4.2. Extrapolated FCI energy</a></li>
+<li><a href="#org3a1ab7a">4.1. Variational energy and PT2 contribution</a></li>
+<li><a href="#org876e496">4.2. Extrapolated FCI energy</a></li>
 </ul>
 </li>
 </ul>
@@ -305,8 +305,8 @@ ground state of molecules. We will use the nitrogen molecule near the
 equilibrium bond length, with the cc-pVDZ basis set.
 </p>
 
-<div id="outline-container-orgb5c8877" class="outline-2">
-<h2 id="orgb5c8877"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div id="outline-container-orgbe7f69a" class="outline-2">
+<h2 id="orgbe7f69a"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, let's create a z-matrix file <code>n2.zmt</code> for dinitrogen, at a distance
@@ -364,8 +364,8 @@ Then, freeze the core orbitals:
 </div>
 </div>
 
-<div id="outline-container-org9c4bb1b" class="outline-2">
-<h2 id="org9c4bb1b"><span class="section-number-2">2</span> Running a first frozen-Core CIPSI Calculation</h2>
+<div id="outline-container-orge42e969" class="outline-2">
+<h2 id="orge42e969"><span class="section-number-2">2</span> Running a first frozen-Core CIPSI Calculation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 To perform the frozen-core FCI calculation using the CIPSI algorithm
@@ -403,8 +403,8 @@ file <code>n2.fci1.out</code>.
 </p>
 </div>
 
-<div id="outline-container-org3c1c45b" class="outline-3">
-<h3 id="org3c1c45b"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
+<div id="outline-container-orgc81faf8" class="outline-3">
+<h3 id="orgc81faf8"><span class="section-number-3">2.1</span> Variational energy and PT2 contribution</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The output of the CIPSI calculation gives information about the
@@ -483,8 +483,8 @@ energy, but it may overestimate its magnitude.
 </div>
 </div>
 
-<div id="outline-container-org4a4dde5" class="outline-3">
-<h3 id="org4a4dde5"><span class="section-number-3">2.2</span> Extrapolated FCI energy</h3>
+<div id="outline-container-org1fe2139" class="outline-3">
+<h3 id="org1fe2139"><span class="section-number-3">2.2</span> Extrapolated FCI energy</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 To plot the variational energy as a function of the renormalized
@@ -570,8 +570,8 @@ that the extrapolated FCI value is close to -109.2781(2).
 </div>
 </div>
 
-<div id="outline-container-orgab83800" class="outline-2">
-<h2 id="orgab83800"><span class="section-number-2">3</span> Saving Natural Orbitals</h2>
+<div id="outline-container-orgf09aa57" class="outline-2">
+<h2 id="orgf09aa57"><span class="section-number-2">3</span> Saving Natural Orbitals</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 We can improve the convergence of CIPSI by using natural orbitals. To
@@ -585,8 +585,8 @@ do this, we first need to save the natural orbitals into the EZFIO database:
 </div>
 </div>
 
-<div id="outline-container-orgc66fbeb" class="outline-2">
-<h2 id="orgc66fbeb"><span class="section-number-2">4</span> Running a second frozen-Core CIPSI Calculation</h2>
+<div id="outline-container-org9365145" class="outline-2">
+<h2 id="org9365145"><span class="section-number-2">4</span> Running a second frozen-Core CIPSI Calculation</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 We can run the frozen-core CIPSI calculation again, but this
@@ -599,8 +599,8 @@ time using the natural orbitals:
 </div>
 </div>
 
-<div id="outline-container-orgcbfeee8" class="outline-3">
-<h3 id="orgcbfeee8"><span class="section-number-3">4.1</span> Variational energy and PT2 contribution</h3>
+<div id="outline-container-org3a1ab7a" class="outline-3">
+<h3 id="org3a1ab7a"><span class="section-number-3">4.1</span> Variational energy and PT2 contribution</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 To create the plot showing the convergence of the energy as a
@@ -644,8 +644,8 @@ orbitals.
 </div>
 </div>
 
-<div id="outline-container-org8590728" class="outline-3">
-<h3 id="org8590728"><span class="section-number-3">4.2</span> Extrapolated FCI energy</h3>
+<div id="outline-container-org876e496" class="outline-3">
+<h3 id="org876e496"><span class="section-number-3">4.2</span> Extrapolated FCI energy</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 One can also compare the plots of the variational energy as a
@@ -716,7 +716,7 @@ energy as -109.2782(2), in agreement with the exact value of
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: A. Ammar, E. Giner, P.-F. Loos, A. Scemama</p>
-<p class="date">Created: 2023-04-18 Tue 13:45</p>
+<p class="date">Created: 2023-04-18 Tue 14:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
