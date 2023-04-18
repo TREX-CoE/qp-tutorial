@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-18 Tue 14:01 -->
+<!-- 2023-04-18 Tue 20:29 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Frozen-Core FCI Calculations using CIPSI</title>
@@ -280,12 +280,12 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd93f3c2">1. Preparing the EZFIO</a></li>
-<li><a href="#org68fc289">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a>
+<li><a href="#org9a315bf">1. Preparing the EZFIO</a></li>
+<li><a href="#org62a2a37">2. Multi-state CIPSI calculation with Hartree-Fock orbitals</a>
 <ul>
-<li><a href="#orgef855b1">2.1. Blind test</a></li>
-<li><a href="#org6f6663c">2.2. A correct run</a></li>
-<li><a href="#orga5b8896">2.3. An improved run</a></li>
+<li><a href="#orgf1524e0">2.1. Blind test</a></li>
+<li><a href="#org334b89b">2.2. A correct run</a></li>
+<li><a href="#org650a651">2.3. An improved run</a></li>
 </ul>
 </li>
 </ul>
@@ -401,8 +401,8 @@ The data are taken from <a href="https://arxiv.org/abs/1807.02045">https://arxiv
 </table>
 
 
-<div id="outline-container-orgd93f3c2" class="outline-2">
-<h2 id="orgd93f3c2"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
+<div id="outline-container-org9a315bf" class="outline-2">
+<h2 id="org9a315bf"><span class="section-number-2">1</span> Preparing the EZFIO</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 First, let's create an <code>xyz</code> file for formaldehyde, in Angstroms:
@@ -455,12 +455,12 @@ excited-state energies and inaccurate properties.
 </div>
 </div>
 
-<div id="outline-container-org68fc289" class="outline-2">
-<h2 id="org68fc289"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
+<div id="outline-container-org62a2a37" class="outline-2">
+<h2 id="org62a2a37"><span class="section-number-2">2</span> Multi-state CIPSI calculation with Hartree-Fock orbitals</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgef855b1" class="outline-3">
-<h3 id="orgef855b1"><span class="section-number-3">2.1</span> Blind test</h3>
+<div id="outline-container-orgf1524e0" class="outline-3">
+<h3 id="orgf1524e0"><span class="section-number-3">2.1</span> Blind test</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 To enable the calculation of multiple states, you can use <code>qp
@@ -575,8 +575,8 @@ impossible to describe any of the \(A_2\), \(B_1\) and \(B_2\) states.
 </div>
 </div>
 
-<div id="outline-container-org6f6663c" class="outline-3">
-<h3 id="org6f6663c"><span class="section-number-3">2.2</span> A correct run</h3>
+<div id="outline-container-org334b89b" class="outline-3">
+<h3 id="org334b89b"><span class="section-number-3">2.2</span> A correct run</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 A simple solution is to start from a set of determinants containing
@@ -803,8 +803,8 @@ Extrapolated energies
 </div>
 </div>
 
-<div id="outline-container-orga5b8896" class="outline-3">
-<h3 id="orga5b8896"><span class="section-number-3">2.3</span> An improved run</h3>
+<div id="outline-container-org650a651" class="outline-3">
+<h3 id="org650a651"><span class="section-number-3">2.3</span> An improved run</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 To improve the results, we can take the state-average natural
@@ -912,7 +912,7 @@ one should obtain 3.99 eV for the first state, and 7.11 eV for the second state.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: A. Ammar, E. Giner, P.-F. Loos, A. Scemama</p>
-<p class="date">Created: 2023-04-18 Tue 14:01</p>
+<p class="date">Created: 2023-04-18 Tue 20:29</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
