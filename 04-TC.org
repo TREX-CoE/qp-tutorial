@@ -6,7 +6,7 @@
 #+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
 #+PROPERTY: header-args :exports code :eval no
 
-Congratulations! By reaching this point in the tutorial, you've made
+Congratulations! By reaching this point in the tutorial, you have made
 fantastic progress and are one step closer to mastering the QP code. In
 this part of the tutorial you will learn how you can easily run a
 calculation with an explicitly correlated wavefunction in the framework
