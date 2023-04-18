@@ -9,7 +9,7 @@
 Congratulations! By reaching this point in the tutorial, you've made 
 fantastic progress and are one step closer to mastering the QP code. In
 this part of the tutorial you will learn how you can easly run a 
-calculation with an explicitly correlated wavefunctions in the framework
+calculation with an explicitly correlated wavefunction in the framework
 of the Transcorrelated (TC) theory.
 
 * CI vs CI-Jastrow wavefunction
