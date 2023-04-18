@@ -68,7 +68,7 @@ git checkout -b dev-stable-tc-scf
 
   Now compile the code by doing
   #+begin_src bash
-  ninja clean
+ninja clean
 ninja
   #+end_src
 
