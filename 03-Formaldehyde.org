@@ -8,7 +8,7 @@
 
 
 In this part of the tutorial, you will learn how to perform
-excited state calculations using the Configuration Interaction 
+excited state calculations using the Configuration Interaction
 using a Perturbative Selection made Iteratively (CIPSI) algorithm in Quantum
 Package (QP). As an illustration, we will compute the energies of the
 two lowest excited states of the formaldehyde molecule in the aug-cc-pVDZ
@@ -73,7 +73,7 @@ valence electrons are found.
 
 When excited states are computed using a basis set that lacks diffuse
 functions, the computed wavefunctions may have insufficiently diffuse
-character and be of lower quality, resulting in overestimated 
+character and be of lower quality, resulting in overestimated
 excited-state energies and inaccurate properties.
   #+end_note
 
@@ -92,14 +92,14 @@ qp run fci | tee formaldehyde.fci1.out
   #+end_src
 
   In multi-state calculations, QP selects a common set of
-  determinants for all the states. The consistency between the states 
+  determinants for all the states. The consistency between the states
   is ensured by selecting determinants such that the PT2 correction is
   comparable within the different states.
 
   #+begin_example
 Summary at N_det =        51242
 -----------------------------------
- 
+
 # ============ ============================= ============================= =============================
                      State      1                  State      2                  State      3
 # ============ ============================= ============================= =============================
@@ -121,7 +121,7 @@ Summary at N_det =        51242
   and 7.3 eV.
 
   Let us look at the wave functions with ~qp edit~ to understand what
-  has gone wrong. Go to the end of the file, and seach backwards for
+  has gone wrong. Go to the end of the file, and search backwards for
   ~=~ to get to the ~Determinants~ section:
 
   #+begin_example
@@ -157,7 +157,7 @@ Determinants ::
   spin-orbital diagrams. The first determinant is the Hartree-Fock
   determinant, and for each determinant, three numbers are given
   which correspond to their CI coefficients in states 1, 2, and 3.
-   
+
   The first state has a dominant Hartree-Fock character, as expected.
   The second state is a 8-10 singly excited state. Looking at
   the MO coefficients earlier in the file, we can identify this
@@ -175,9 +175,9 @@ Determinants ::
   irreducible representations. Hence, only determinants in $A_1$ can
   be selected starting from the Hartree-Fock determinant, and it is
   impossible to describe any of the $A_2$, $B_1$ and $B_2$ states.
-  
+
 ** A correct run
-   
+
   A simple solution is to start from a set of determinants containing
   at least one determinant of each irreducible representation.
   The ~cis~ program performs the CI in the determinant space
@@ -187,14 +187,14 @@ Determinants ::
   #+begin_src bash
 qp run cis | tee formaldehyde.cis1.out
   #+end_src
-  
+
   The CIS program obtains a first excited state at 4.55 eV, and a
-  second one at 8.57 ev:
+  second one at 8.57 eV:
 
   #+begin_example
  Excitation energies (au)                     (eV)
-           2  0.16732247703939152        4.5529677944444256     
-           3  0.31507863549308013        8.5735216541156269   
+           2  0.16732247703939152        4.5529677944444256
+           3  0.31507863549308013        8.5735216541156269
   #+end_example
 
   Looking at the wave function with ~qp edit~, we can confirm we have
@@ -224,7 +224,7 @@ Determinants ::
     ++++++++--------------------------------------------------------
 
   #+end_example
-  
+
   The second state is a 8-11 excitation, and the third state is a 8-13 excitation.
   Both are $n \rightarrow \pi^*$ excitations.
   This looks correct!
@@ -240,10 +240,10 @@ qp run save_natorb
 
   The occupation number is now close to 4/3 in orbital 8, and close to 1/3 in orbitals
   9 and 10:
-  
+
   #+begin_example
 ======== ================ ================
-   MO       Eigenvalue       Cumulative   
+   MO       Eigenvalue       Cumulative
 ======== ================ ================
        1     2.0000000000     2.0000000000
        2     2.0000000000     4.0000000000
@@ -300,18 +300,18 @@ Determinants ::
 
   We are now ready to run the CIPSI calculation, using the CIS as a
   starting point:
-  
+
   #+begin_src bash
 qp set determinants read_wf true
 qp run fci | tee formaldehyde.fci2.out
   #+end_src
-  
-  The obtained energies are 
+
+  The obtained energies are
 
   #+begin_example
 Summary at N_det =        61167
 -----------------------------------
- 
+
 # ============ ============================= ============================= =============================
                      State      1                  State      2                  State      3
 # ============ ============================= ============================= =============================
@@ -335,9 +335,9 @@ Summary at N_det =        61167
 Extrapolated energies
 ------------------------
 
- 
+
  State            1
- 
+
  =========== ===================
  minimum PT2 Extrapolated energy
  =========== ===================
@@ -348,11 +348,11 @@ Extrapolated energies
     -0.2967       -114.23323620
     -0.3874       -114.22613671
  =========== ===================
- 
+
  State            2
- 
+
  =========== =================== =================== ===================
- minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)
  =========== =================== =================== ===================
     -0.1256       -114.09427941         0.14875027         4.04770262
     -0.1664       -114.09306651         0.14793886         4.02562301
@@ -361,11 +361,11 @@ Extrapolated energies
     -0.3019       -114.08733065         0.14590555         3.97029379
     -0.3892       -114.08668158         0.13945513         3.79476873
  =========== =================== =================== ===================
- 
+
  State            3
- 
+
  =========== =================== =================== ===================
- minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)
  =========== =================== =================== ===================
     -0.1146       -113.98182916         0.26120052         7.10763096
     -0.1507       -113.97980692         0.26119845         7.10757457
@@ -376,8 +376,8 @@ Extrapolated energies
  =========== =================== =================== ===================
 
   #+end_example
-  
-** An improved run 
+
+** An improved run
 
    To improve the results, we can take the state-average natural
    orbitals of the previous CIPSI calculation, and run another CIPSI
@@ -394,8 +394,8 @@ qp run cis | tee formaldehyde.cis3.out
 
    #+begin_example
  Excitation energies (au)                     (eV)
-           2  0.150674637886709        4.09996783382701     
-           3  0.278687823609005        7.58330086935594 
+           2  0.150674637886709        4.09996783382701
+           3  0.278687823609005        7.58330086935594
    #+end_example
 
    #+begin_src bash
@@ -407,7 +407,7 @@ qp run fci | tee formaldehyde.fci3.out
   #+begin_example
 Summary at N_det =       102890
 -----------------------------------
- 
+
 # ============ ============================= ============================= =============================
                      State      1                  State      2                  State      3
 # ============ ============================= ============================= =============================
@@ -423,12 +423,12 @@ Summary at N_det =       102890
 # Excit. (eV)     0.00000000     0.00424423     4.02955356     0.00415329     7.19309903     0.00407396
 # ============ ============================= ============================= =============================
   #+end_example
-  
+
   and the extrapolated energies are:
 
   #+begin_example
  State            1
- 
+
  =========== ===================
  minimum PT2 Extrapolated energy
  =========== ===================
@@ -438,11 +438,11 @@ Summary at N_det =       102890
     -0.2445       -114.24194770
     -0.3985       -114.23699775
  =========== ===================
- 
+
  State            2
- 
+
  =========== =================== =================== ===================
- minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)
  =========== =================== =================== ===================
     -0.0755       -114.09662130         0.14817146         4.03195238
     -0.1113       -114.09703285         0.14701310         4.00043179
@@ -450,11 +450,11 @@ Summary at N_det =       102890
     -0.2404       -114.09557286         0.14637485         3.98306404
     -0.3913       -114.09220186         0.14479589         3.94009845
  =========== =================== =================== ===================
- 
+
  State            3
- 
+
  =========== =================== =================== ===================
- minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)  
+ minimum PT2 Extrapolated energy   Excitation (a.u)    Excitation (eV)
  =========== =================== =================== ===================
     -0.0727       -113.98287958         0.26191319         7.12702357
     -0.1036       -113.98180071         0.26224524         7.13605928
@@ -464,8 +464,8 @@ Summary at N_det =       102890
  =========== =================== =================== ===================
 
   #+end_example
-  
-  Leaving the calculation run much longer by considering a larger ~n_det_max~, 
-  one should obtain 3.99 eV for the 1st state, and 7.11 eV for the 2nd state.
-  
-  
+
+  Leaving the calculation run much longer by considering a larger ~n_det_max~,
+  one should obtain 3.99 eV for the first state, and 7.11 eV for the second state.
+
+

@@ -45,7 +45,7 @@ qp run scf | tee n2.scf.out
   #+end_src
 
   The expected HF energy is -108.949378 atomic units.
- 
+
   Then, freeze the core orbitals:
 
   #+begin_src bash
@@ -62,7 +62,7 @@ qp set_frozen_core
   ~Active~ and the two core MOs as ~Core~ using the ~qp set_frozen_core~
   command, we can now set the maximum number of determinants to 50 000
   using the ~qp set~ command.
-  
+
   #+begin_src bash
 qp set determinants n_det_max 50000
   #+end_src
@@ -80,13 +80,13 @@ qp run fci | tee n2.fci1.out
   displayed in the terminal, but we can save it to a file using the
   ~tee~ command. In this case, the standard output will be saved to the
   file =n2.fci1.out=.
-  
+
 ** Variational energy and PT2 contribution
 
    The output of the CIPSI calculation gives information about the
    convergence of the wavefunction, the energy, and the correlation
    energy of the system.
-   
+
    The output displays results at different numbers of determinants
    (~N_det~) in the wavefunction (1, 9, 24, 50, ...). For each
    ~N_det~, the output shows the energy (E), the PT2 and rPT2
@@ -117,7 +117,7 @@ Summary at N_det =        62591
    To create a plot showing the convergence of the energy as a
    function of the size of the wavefunction, first extract the
    relevant data from the output file:
-   
+
    #+begin_src bash
 qp_extract_cipsi_data.py n2.fci1.out > data
    #+end_src
@@ -139,9 +139,9 @@ plot "data"  using 1:2 with linespoints title "E", \
    The plot indicates that the variational energy converges to the FCI
    limit. The PT2-corrected energy is a better estimate of the FCI
    energy, but it may overestimate its magnitude.
-  
+
 ** Extrapolated FCI energy
-    
+
    To plot the variational energy as a function of the renormalized
    PT2 correction, use the following Gnuplot commands:
 
@@ -154,7 +154,7 @@ set xrange [:0.]
 plot "data"  using 5:2 with linespoints title "", \
      -109.278339 title "FCI"
    #+end_src
-  
+
    The FCI energy can be estimated by making a linear fit using all the
    calculations with different ~N_det~:
 
@@ -162,7 +162,7 @@ plot "data"  using 5:2 with linespoints title "", \
    E_{\text{CIPSI}} (\text{rPT2}) = E + \alpha\, \text{rPT2}
    \]
 
-   Fitting the curve with Gnuplot over the last few points (for $|\text{rPT2}| \le -0.05$), 
+   Fitting the curve with Gnuplot over the last few points (for $|\text{rPT2}| \le -0.05$),
    one obtains an FCI estimate of -109.2779 au.
 
    #+begin_src gnuplot
@@ -171,12 +171,12 @@ fit [-0.05:0.] E_var(x) "data" using 5:2 via a, E_FCI
 replot E_var(x) title "Fit"
 print E_FCI
    #+end_src
-  
+
    [[./images/n2-hf-fit.png]]
 
    The following section of the output shows the extrapolated FCI
    energy for the ground state, with energies provided for various rPT2
-   values. 
+   values.
 
    #+begin_example
 Extrapolated energies
@@ -204,7 +204,7 @@ Extrapolated energies
    extrapolated values with multiple points, the user can determine the
    stability of the extrapolation. In this case, we can confidently state
    that the extrapolated FCI value is close to -109.2781(2).
-   
+
 * Saving Natural Orbitals
 
   We can improve the convergence of CIPSI by using natural orbitals. To
@@ -251,10 +251,10 @@ plot "data"  using 1:2 with linespoints title "HF : E", \
 
    The plot indicates that the variational energy converges more
    quickly with natural orbitals compared to Hartree-Fock
-   orbitals. 
-  
+   orbitals.
+
 ** Extrapolated FCI energy
-    
+
    One can also compare the plots of the variational energy as a
    function of the renormalized PT2 correction:
 
@@ -268,8 +268,8 @@ plot "data"  using 5:2 with linespoints title "HF", \
      "data2" using 5:2 with linespoints title "Nat", \
      -109.278339 title "FCI"
    #+end_src
-  
-   Fitting the curve with Gnuplot over the last few points (for $|E_{\text{PT2}}| \le -0.05$), 
+
+   Fitting the curve with Gnuplot over the last few points (for $|E_{\text{PT2}}| \le -0.05$),
    one obtains a FCI estimate of -109.27813 au.
 
    #+begin_src gnuplot
@@ -278,7 +278,7 @@ fit [-0.05:0.] E_var(x) "data2" using 5:2 via a, E_FCI
 replot E_var(x) title "Fit"
 print E_FCI
    #+end_src
-  
+
    [[./images/n2-nat-fit.png]]
 
    #+begin_example
@@ -304,7 +304,7 @@ Extrapolated energies
    The extrapolated energies are more accurate with natural orbitals
    since the PT2 corrections are smaller: the last point is closer to
    the origin. From the data of the table, one can estimate the FCI
-   energy as -109.2782(2), in agreement with the exact value of 
+   energy as -109.2782(2), in agreement with the exact value of
    -109.278339.
-    
-    
+
+

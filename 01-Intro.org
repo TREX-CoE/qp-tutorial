@@ -107,10 +107,10 @@ ao_coef.gz    ao_normalized  ao_power.gz
   #+end_src
 
   #+begin_src bash
-$ cat h2o.ezfio/ao_basis/ao_num 
+$ cat h2o.ezfio/ao_basis/ao_num
                   25
-#+end_src  
-  
+#+end_src
+
 * Running Calculations
 
   Now that you have an EZFIO database, you can use QP to run

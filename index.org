@@ -6,8 +6,7 @@
 
 * Presentations
 
-#    - [[./Presentations/lectures_filippi_1.pdf][Basic VMC and DMC]]
-#    - [[./Presentations/multidet.pdf][Multi-determinant wave functions]]
+    - [[./Presentations/algorithms.pdf][Algorithms used in Quantum Package]]
 
 * Hands-on
 
