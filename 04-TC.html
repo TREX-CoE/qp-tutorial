@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-04-18 Tue 07:15 -->
+<!-- 2023-04-18 Tue 07:18 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Transcorrelated calculations</title>
@@ -280,31 +280,31 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8512b60">1. CI vs CI-Jastrow wavefunction</a></li>
-<li><a href="#org570a2e3">2. Installation</a></li>
-<li><a href="#org1f8c822">3. TC self consistent field</a></li>
-<li><a href="#orga332140">4. TC CIPSI</a>
+<li><a href="#org511dcbe">1. CI vs CI-Jastrow wavefunction</a></li>
+<li><a href="#orga710408">2. Installation</a></li>
+<li><a href="#orgac2772e">3. TC self consistent field</a></li>
+<li><a href="#org8aed7af">4. TC CIPSI</a>
 <ul>
-<li><a href="#org7f2d158">4.1. Convergence of TC-CIPSI</a></li>
-<li><a href="#org6820425">4.2. CIPSI vs TC-CIPSI</a></li>
+<li><a href="#orgad2493d">4.1. Convergence of TC-CIPSI</a></li>
+<li><a href="#orgb504299">4.2. CIPSI vs TC-CIPSI</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <p>
-Congratulations! By reaching this point in the tutorial, you've made 
+Congratulations! By reaching this point in the tutorial, you've made
 fantastic progress and are one step closer to mastering the QP code. In
-this part of the tutorial you will learn how you can easly run a 
-calculation with an explicitly correlated wavefunction in the framework
+this part of the tutorial you will learn how you can easily run a
+calculation with an explicitly correlated wavefunctions in the framework
 of the Transcorrelated (TC) theory.
 </p>
 
-<div id="outline-container-org8512b60" class="outline-2">
-<h2 id="org8512b60"><span class="section-number-2">1</span> CI vs CI-Jastrow wavefunction</h2>
+<div id="outline-container-org511dcbe" class="outline-2">
+<h2 id="org511dcbe"><span class="section-number-2">1</span> CI vs CI-Jastrow wavefunction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-In the precious sections, all the ground and the excited states 
+In the precious sections, all the ground and the excited states
 calculations were made with a CI wavefunction,
 \[
   \Psi = \sum_I c_I D_I
@@ -329,10 +329,10 @@ when electrons are closed to nuclei,
   v(\mathbf{r}) = \Pi_A \left[ 1 - \exp \left( -\alpha_A \left( \mathbf{r} - \mathbf{R_A} \right)^2 \right) \right],
   \]
 where the index \(A\) runs over the nuclei.
-The parameter \(\mu\) controls both the depth of the coulomb hole and the typical 
+The parameter \(\mu\) controls both the depth of the coulomb hole and the typical
 range of the correlation factor in \(r_{12}\). In practice, \(\mu=0.87\) is optimal
-to correlate valence electrons and therefore only the parameter \(\alpha\) need to 
-be optimized. This parameter depends on the atom as well as the choice of the 
+to correlate valence electrons and therefore only the parameter \(\alpha\) need to
+be optimized. This parameter depends on the atom as well as the choice of the
 basis set. In this tutorial, the optimal value of \(\alpha\) will be given.
 </p>
 </div>
@@ -341,17 +341,17 @@ basis set. In this tutorial, the optimal value of \(\alpha\) will be given.
 
 
 
-<div id="outline-container-org570a2e3" class="outline-2">
-<h2 id="org570a2e3"><span class="section-number-2">2</span> Installation</h2>
+<div id="outline-container-orga710408" class="outline-2">
+<h2 id="orga710408"><span class="section-number-2">2</span> Installation</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Since the TC algorithms are developed very recently, you need to 
+Since the TC algorithms are developed very recently, you need to
 switch from <code>master</code> to <code>dev-stable-tc-scf</code>. This can be done easily
 by few steps.
 </p>
 
 <p>
-First go to the repository of QP and then switch to the branch of 
+First go to the repository of QP and then switch to the branch of
 TC development
 </p>
 <div class="org-src-container">
@@ -395,15 +395,15 @@ Now you can start running TC calculation! ;)
 </div>
 
 
-<div id="outline-container-org1f8c822" class="outline-2">
-<h2 id="org1f8c822"><span class="section-number-2">3</span> TC self consistent field</h2>
+<div id="outline-container-orgac2772e" class="outline-2">
+<h2 id="orgac2772e"><span class="section-number-2">3</span> TC self consistent field</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In the standard post-Hartree-Fock methods, the Hartree-Fock (HF) orbitals
 provide a good start point. Although we can use the HF orbitals in the TC
 calculations, it is better to start from optimized orbitals to accelerate
 the convergence in term of the number of determinants.
-The TC self consistent field <a href="https://arxiv.org/pdf/2303.02436.pdf">TC-SCF</a> is an iterative method that allows to get 
+The TC self consistent field <a href="https://arxiv.org/pdf/2303.02436.pdf">TC-SCF</a> is an iterative method that allows to get
 canonical biorthogonal left \(\{\chi_i\}\) and right \(\{\phi_i\}\) orbitals,
 \[
   \left\langle \chi_i | \phi_j \right\rangle = \delta_{ij}
@@ -414,8 +414,8 @@ satisfies the Brillouin theorem for the TC Hamiltonian.
 
 <p>
 In order to show how to run a TC-SCF calculation, we consider again the example
-of the dinitrogen with the cc-pVDZ basis set, at a distance of 2.118 atomic units. 
-We start by creating an EZFIO database and running a standard HF calculation that 
+of the dinitrogen with the cc-pVDZ basis set, at a distance of 2.118 atomic units.
+We start by creating an EZFIO database and running a standard HF calculation that
 will be used as a start point for the TC-SCF.
 Don't forget to create the z-matrix file <code>n2.zmt</code> before creating the EZFIO.
 </p>
@@ -427,7 +427,7 @@ qp run scf | tee n2_tc.scf.out
 
 <p>
 Before performing the TC-SCF calculation we need to fix the parameters
-of the Jastrow. 
+of the Jastrow.
 Many Jastrow factor are under development in QP. The form discussed above
 corresponds to the keyword <code>j1b_type=3</code>
 </p>
@@ -438,7 +438,7 @@ corresponds to the keyword <code>j1b_type=3</code>
 
 <p>
 Concerning the parameter \(\mu\) of the Jastrow, it is
-recommanded to use always \(\mu=0.87\).
+recommended to use always \(\mu=0.87\).
 </p>
 <div class="org-src-container">
 <pre class="src src-bash">qp set ao_two_e_erf_ints mu_erf 0.87
@@ -446,7 +446,7 @@ recommanded to use always \(\mu=0.87\).
 </div>
 
 <p>
-The parameter \(\alpha\) need to be optimized in general for 
+The parameter \(\alpha\) need to be optimized in general for
 each atom and the optimal value depends on the basis sets.
 For the Nitrogen atom in cc-pVDZ, the optimal correlation parameter
 is \(\alpha=1.4\).
@@ -458,8 +458,8 @@ is \(\alpha=1.4\).
 
 <div class="note">
 <p>
-Since TC integrals can be expensive to calculate, once they 
-are calculated, we store them in the EXFIO database.
+Since TC integrals can be expensive to calculate, once they
+are calculated, we store them in the EZFIO database.
 This allows them to be read directly in a future calculation
 (like in the next TC-CIPSI calculation). This can be done
 with,
@@ -491,8 +491,8 @@ output file, or by the command
 
 <p>
 The expected TC-SCF energy is -109.001278 atomic units.
-In contrast to the HF energy which, by definition, does not 
-include electronic correlation, the TC-SCF energy includes 
+In contrast to the HF energy which, by definition, does not
+include electronic correlation, the TC-SCF energy includes
 correlation although only one determinant is used.
 This is why we get an improvement with respect to the HF
 energy by \(\approx 52\) mH.
@@ -501,18 +501,18 @@ energy by \(\approx 52\) mH.
 </div>
 
 
-<div id="outline-container-orga332140" class="outline-2">
-<h2 id="orga332140"><span class="section-number-2">4</span> TC CIPSI</h2>
+<div id="outline-container-org8aed7af" class="outline-2">
+<h2 id="org8aed7af"><span class="section-number-2">4</span> TC CIPSI</h2>
 <div class="outline-text-2" id="text-4">
 <p>
-In the previous sections, we observed that CIPSI is highly 
-efficient in approximating the FCI energy. In this section, we 
-will delve into the accuracy of TC-CIPSI and demonstrate how 
+In the previous sections, we observed that CIPSI is highly
+efficient in approximating the FCI energy. In this section, we
+will delve into the accuracy of TC-CIPSI and demonstrate how
 it achieves near TC-FCI accuracy.
-Additionally, we will compare the results obtained from CIPSI 
-and TC-CIPSI, shedding light on the similarities and differences 
-between the two methods. To ensure a fair comparison, we will 
-freeze the core orbitals and maintain the same number of of 
+Additionally, we will compare the results obtained from CIPSI
+and TC-CIPSI, shedding light on the similarities and differences
+between the two methods. To ensure a fair comparison, we will
+freeze the core orbitals and maintain the same number of of
 <code>n_det_max</code> as before:
 </p>
 <div class="org-src-container">
@@ -532,8 +532,8 @@ code and we save the output to the file <code>n2_tc.tcfci.out</code>:
 
 <p>
 The output file contains a lot of information.
-To extract the relevant data and visualize the convergence of the 
-TC energy in function of the number of determinants, we can 
+To extract the relevant data and visualize the convergence of the
+TC energy in function of the number of determinants, we can
 simply use the <code>grep</code> command:
 </p>
 <div class="org-src-container">
@@ -543,21 +543,21 @@ simply use the <code>grep</code> command:
 
 <p>
 <code>data_tc</code> contains 5 columns.
-These columns refer to the number of selected determinants 
+These columns refer to the number of selected determinants
 <code>N_det</code>, the TC energy in the basis of selected determinants \(E_{TC}^{0}\),
-the estimation of the TC-FCI energy with the TC-PT2 correction 
-\(E_{TC}^{0}+E_{TC}^{2}\) and with renormalized correction TC-rPT2 
+the estimation of the TC-FCI energy with the TC-PT2 correction
+\(E_{TC}^{0}+E_{TC}^{2}\) and with renormalized correction TC-rPT2
 \(E_{TC}^{0}+rE_{TC}^{2}\), and finally the negative part of the TC-PT2 correction.
 Note that in the standard case the PT2 is always negative while the TC-PT2
 may be positive or negative depending on the chosen Jastrow factor.
 </p>
 </div>
 
-<div id="outline-container-org7f2d158" class="outline-3">
-<h3 id="org7f2d158"><span class="section-number-3">4.1</span> Convergence of TC-CIPSI</h3>
+<div id="outline-container-orgad2493d" class="outline-3">
+<h3 id="orgad2493d"><span class="section-number-3">4.1</span> Convergence of TC-CIPSI</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-First we want to compare between the obtained TC-CIPSI energy and the 
+First we want to compare between the obtained TC-CIPSI energy and the
 TC-FCI energy \(E_{\text{TC-FCI}}=-109.3199\) atomic units.
 </p>
 
@@ -566,7 +566,7 @@ The extrapolation of the TC-CIPSI energy
 \[
   E_{\text{TC-CIPSI}}^{0}(E_{\text{TC-CIPSI}}^{2}) \approx a  (E_{\text{TC-CIPSI}}^{2}) + E_{\text{TC-FCI}}
   \]
-gives an estimation of \(E_{\text{TC-FCI}} \approx -109.3197\) atomic units which is 
+gives an estimation of \(E_{\text{TC-FCI}} \approx -109.3197\) atomic units which is
 very close to the TC-FCI energy.
 </p>
 <div class="org-src-container">
@@ -606,21 +606,22 @@ exit
 </div>
 
 
-<div id="outline-container-org6820425" class="outline-3">
-<h3 id="org6820425"><span class="section-number-3">4.2</span> CIPSI vs TC-CIPSI</h3>
+<div id="outline-container-orgb504299" class="outline-3">
+<h3 id="orgb504299"><span class="section-number-3">4.2</span> CIPSI vs TC-CIPSI</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 We turn now to the comparison between the CIPSI and the TC-CIPSI
 energies. The following gnuplot script allows to visualize the convergence
 of both, in term of the number of determinants.
 </p>
+
 <div class="org-src-container">
 <pre class="src src-gnuplot">#!/usr/bin/gnuplot
 set terminal pdfcairo enhanced font "Times,12"  size 4.0,2.5
 set output "conv_Etc.pdf"
 
 set grid
-#set key top right                                                                                                         
+#set key top right
 
 set xrange [10:100000]
 set logscale x
@@ -652,9 +653,9 @@ exit
 </div>
 
 <p>
-We observe that both \(E_{\text{CISPI}}\) and \(E_{\text{TC-CISPI}}\) converge to the 
+We observe that both \(E_{\text{CISPI}}\) and \(E_{\text{TC-CISPI}}\) converge to the
 \(E_{\text{FCI}}\) and \(E_{\text{TC-FCI}}\) limits, respectively.
-However, the TC energy provide an improvement over the standard FCI energy by 
+However, the TC energy provide an improvement over the standard FCI energy by
 \(\approx 41\) mH.
 </p>
 </div>
@@ -663,7 +664,7 @@ However, the TC energy provide an improvement over the standard FCI energy by
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: A. Ammar, E. Giner, P.-F. Loos, A. Scemama</p>
-<p class="date">Created: 2023-04-18 Tue 07:15</p>
+<p class="date">Created: 2023-04-18 Tue 07:18</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
