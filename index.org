@@ -6,6 +6,7 @@
 
 * Presentations
 
+    - [[./Presentations/TREX_Loos.pdf][Introduction to CIPSI: theory and examples]]
     - [[./Presentations/algorithms.pdf][Algorithms used in Quantum Package]]
     - [[./Presentations/tc.pdf][Transcorrelated approach for CI methods]]
 
